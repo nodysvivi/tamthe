@@ -1,0 +1,2498 @@
+<!-- Thanh trạng thái Tam Thể v1.1.0 | Phối màu ba chủ đề | Ánh xạ MVU chỉ đọc | 2026-07-16 -->
+<!doctype html>
+<html lang="vi-VN" data-theme="night">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="app-version" content="1.1.0">
+  <title>Thiết bị quan sát Khu rừng đen</title>
+  <style>
+:root {
+  color-scheme: dark;
+  --void-rgb: 5, 10, 16;
+  --abyss-rgb: 8, 16, 24;
+  --surface-rgb: 14, 28, 38;
+  --surface-hover-rgb: 18, 36, 47;
+  --accent-rgb: 126, 193, 201;
+  --muted-rgb: 116, 143, 149;
+  --danger-rgb: 214, 88, 76;
+  --amber-rgb: 198, 153, 82;
+  --cyan-rgb: 84, 160, 171;
+  --star-rgb: 205, 238, 241;
+  --void: rgb(var(--void-rgb));
+  --abyss: rgb(var(--abyss-rgb));
+  --glass: rgba(var(--surface-rgb), 0.9);
+  --glass-soft: rgba(var(--surface-rgb), 0.72);
+  --line: rgba(var(--accent-rgb), 0.2);
+  --line-strong: rgba(var(--accent-rgb), 0.42);
+  --phosphor: #b2d2d6;
+  --phosphor-hot: #eff9fa;
+  --muted: #8da5aa;
+  --dim: #657d82;
+  --text-soft: #a4bdc1;
+  --text-faint: #849da2;
+  --red: #d6584c;
+  --red-hot: #f08778;
+  --amber: #c69952;
+  --cyan: #62a7b2;
+  --ink: #0a151d;
+  --shadow-outer: rgba(0, 0, 0, 0.5);
+  --shadow-inner: rgba(0, 0, 0, 0.34);
+  --edge-highlight: rgba(226, 248, 250, 0.07);
+  --scan-blend: screen;
+  --font-scale: 1;
+  --serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", STSong, Georgia, serif;
+  --sans: "Noto Sans SC", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
+  --mono: "IBM Plex Mono", "JetBrains Mono", "Cascadia Mono", Consolas, monospace;
+}
+
+:root[data-theme="day"] {
+  color-scheme: light;
+  --void-rgb: 244, 247, 245;
+  --abyss-rgb: 255, 255, 255;
+  --surface-rgb: 250, 252, 250;
+  --surface-hover-rgb: 255, 255, 255;
+  --accent-rgb: 54, 111, 118;
+  --muted-rgb: 95, 119, 123;
+  --danger-rgb: 176, 65, 56;
+  --amber-rgb: 145, 101, 44;
+  --cyan-rgb: 47, 116, 128;
+  --star-rgb: 58, 104, 110;
+  --line: rgba(var(--accent-rgb), 0.2);
+  --line-strong: rgba(var(--accent-rgb), 0.38);
+  --phosphor: #385459;
+  --phosphor-hot: #182f34;
+  --muted: #536d72;
+  --dim: #75878a;
+  --text-soft: #425c61;
+  --text-faint: #60787c;
+  --red: #b04138;
+  --red-hot: #8f302a;
+  --amber: #91652c;
+  --cyan: #2f7480;
+  --ink: #f4f7f5;
+  --shadow-outer: rgba(37, 56, 59, 0.16);
+  --shadow-inner: rgba(37, 56, 59, 0.08);
+  --edge-highlight: rgba(255, 255, 255, 0.82);
+  --scan-blend: multiply;
+}
+
+:root[data-theme="tea"] {
+  color-scheme: light;
+  --void-rgb: 232, 223, 204;
+  --abyss-rgb: 247, 241, 228;
+  --surface-rgb: 240, 231, 213;
+  --surface-hover-rgb: 251, 246, 235;
+  --accent-rgb: 119, 91, 57;
+  --muted-rgb: 127, 108, 87;
+  --danger-rgb: 151, 67, 57;
+  --amber-rgb: 145, 99, 47;
+  --cyan-rgb: 72, 113, 112;
+  --star-rgb: 112, 86, 55;
+  --line: rgba(var(--accent-rgb), 0.2);
+  --line-strong: rgba(var(--accent-rgb), 0.4);
+  --phosphor: #5c4c3e;
+  --phosphor-hot: #2f2720;
+  --muted: #756452;
+  --dim: #92816f;
+  --text-soft: #665546;
+  --text-faint: #7f6d5d;
+  --red: #974339;
+  --red-hot: #7d332d;
+  --amber: #91632f;
+  --cyan: #487170;
+  --ink: #f3ebdc;
+  --shadow-outer: rgba(73, 54, 34, 0.18);
+  --shadow-inner: rgba(73, 54, 34, 0.1);
+  --edge-highlight: rgba(255, 252, 243, 0.78);
+  --scan-blend: multiply;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background: transparent;
+  color: var(--phosphor);
+  font-family: var(--sans);
+  font-size: calc(14px * var(--font-scale));
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  color: inherit;
+}
+
+.tb-frame {
+  position: relative;
+  width: min(100%, 1120px);
+  margin: 0 auto;
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid var(--line-strong);
+  border-radius: 3px;
+  background:
+    radial-gradient(circle at 84% 8%, rgba(var(--accent-rgb), 0.12), transparent 24%),
+    radial-gradient(circle at 14% 74%, rgba(var(--danger-rgb), 0.09), transparent 28%),
+    linear-gradient(145deg, rgba(var(--void-rgb), 0.98), rgba(var(--surface-rgb), 0.98) 52%, rgba(var(--void-rgb), 0.99));
+  box-shadow:
+    0 18px 60px var(--shadow-outer),
+    inset 0 0 70px var(--shadow-inner),
+    inset 0 1px 0 var(--edge-highlight);
+}
+
+.tb-frame::before,
+.tb-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.tb-frame::before {
+  opacity: 0.48;
+  background-image:
+    radial-gradient(circle at 6% 18%, rgba(var(--star-rgb), 0.75) 0 0.6px, transparent 0.9px),
+    radial-gradient(circle at 18% 64%, rgba(var(--star-rgb), 0.5) 0 0.6px, transparent 1px),
+    radial-gradient(circle at 41% 28%, rgba(var(--star-rgb), 0.45) 0 0.5px, transparent 0.9px),
+    radial-gradient(circle at 69% 76%, rgba(var(--star-rgb), 0.55) 0 0.6px, transparent 1px),
+    radial-gradient(circle at 88% 31%, rgba(var(--star-rgb), 0.7) 0 0.6px, transparent 1px),
+    radial-gradient(circle at 97% 88%, rgba(var(--star-rgb), 0.42) 0 0.5px, transparent 0.9px);
+  background-size: 173px 149px, 211px 191px, 257px 229px, 293px 271px, 337px 311px, 389px 347px;
+}
+
+.tb-frame::after {
+  opacity: 0.16;
+  background: repeating-linear-gradient(0deg, transparent 0 3px, rgba(var(--accent-rgb), 0.08) 4px);
+  mix-blend-mode: var(--scan-blend);
+}
+
+.tb-scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -30%;
+  z-index: 20;
+  height: 26%;
+  pointer-events: none;
+  opacity: 0.22;
+  background: linear-gradient(180deg, transparent, rgba(var(--accent-rgb), 0.07), transparent);
+  animation: tb-scan 9s linear infinite;
+}
+
+@keyframes tb-scan {
+  to { transform: translateY(500%); }
+}
+
+.tb-header {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(250px, 0.65fr);
+  gap: 22px;
+  padding: 25px 28px 19px;
+  border-bottom: 1px solid var(--line);
+}
+
+.tb-header::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  width: 34%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--red));
+  box-shadow: 0 0 12px rgba(var(--danger-rgb), 0.44);
+}
+
+.tb-kicker,
+.tb-eyebrow {
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: calc(9px * var(--font-scale));
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.tb-kicker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 9px;
+}
+
+.tb-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--phosphor);
+  box-shadow: 0 0 10px var(--phosphor);
+  animation: tb-pulse 2.2s ease-in-out infinite;
+}
+
+@keyframes tb-pulse {
+  50% { opacity: 0.28; transform: scale(0.78); }
+}
+
+.tb-title {
+  margin: 0;
+  color: var(--phosphor-hot);
+  font-family: var(--serif);
+  font-size: clamp(25px, 4vw, 43px);
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  line-height: 1.05;
+  text-shadow: 0 0 28px rgba(var(--accent-rgb), 0.14);
+}
+
+.tb-subtitle {
+  margin-top: 9px;
+  color: var(--dim);
+  font-family: var(--mono);
+  font-size: calc(10px * var(--font-scale));
+  letter-spacing: 0.16em;
+}
+
+.tb-coordinate {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 18px;
+  align-items: center;
+}
+
+.tb-coordinate-text {
+  min-width: 0;
+  text-align: right;
+}
+
+.tb-time {
+  color: var(--phosphor-hot);
+  font-family: var(--mono);
+  font-size: calc(15px * var(--font-scale));
+  font-variant-numeric: tabular-nums;
+  line-height: 1.35;
+}
+
+.tb-location {
+  margin-top: 5px;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: calc(11px * var(--font-scale));
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tb-orbit {
+  --p: 0;
+  position: relative;
+  display: grid;
+  width: 74px;
+  aspect-ratio: 1;
+  place-items: center;
+  border-radius: 50%;
+  background: conic-gradient(var(--red) calc(var(--p) * 1%), rgba(var(--muted-rgb), 0.13) 0);
+  box-shadow: 0 0 24px rgba(var(--danger-rgb), 0.12);
+}
+
+.tb-orbit::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--abyss);
+}
+
+.tb-orbit-value,
+.tb-orbit-label {
+  position: relative;
+  z-index: 1;
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.tb-orbit-value {
+  margin-top: 7px;
+  color: var(--red-hot);
+  font-size: calc(17px * var(--font-scale));
+}
+
+.tb-orbit-label {
+  margin-top: -17px;
+  color: var(--dim);
+  font-size: calc(7px * var(--font-scale));
+  letter-spacing: 0.12em;
+}
+
+.tb-tabs {
+  display: flex;
+  gap: 0;
+  padding: 0 17px;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--line);
+  scrollbar-width: none;
+}
+
+.tb-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tb-tab {
+  position: relative;
+  flex: 1 0 auto;
+  min-width: 100px;
+  padding: 14px 12px 12px;
+  border: 0;
+  background: transparent;
+  color: var(--dim);
+  cursor: pointer;
+  font-family: var(--serif);
+  font-size: calc(13px * var(--font-scale));
+  letter-spacing: 0.08em;
+  transition: color 180ms ease, background 180ms ease;
+  white-space: nowrap; /* Ngăn chữ xuống dòng gây mất chữ */
+}
+
+.tb-tab::before {
+  content: attr(data-code);
+  display: block;
+  margin-bottom: 3px;
+  font-family: var(--mono);
+  font-size: calc(7px * var(--font-scale));
+  letter-spacing: 0.18em;
+}
+
+.tb-tab::after {
+  content: "";
+  position: absolute;
+  right: 20%;
+  bottom: -1px;
+  left: 20%;
+  height: 1px;
+  background: var(--phosphor);
+  box-shadow: 0 0 10px var(--phosphor);
+  opacity: 0;
+  transform: scaleX(0.2);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.tb-tab:hover,
+.tb-tab.active {
+  color: var(--phosphor-hot);
+  background: linear-gradient(180deg, transparent, rgba(var(--accent-rgb), 0.06));
+}
+
+.tb-tab.active::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.tb-main {
+  padding: 21px 22px 19px;
+}
+
+.tb-panel {
+  display: none;
+  animation: tb-in 260ms ease both;
+}
+
+.tb-panel.active {
+  display: block;
+}
+
+@keyframes tb-in {
+  from { opacity: 0; transform: translateY(4px); }
+}
+
+.tb-hero-grid,
+.tb-grid-2,
+.tb-grid-3,
+.tb-entity-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.tb-hero-grid {
+  grid-template-columns: minmax(0, 1.08fr) minmax(270px, 0.92fr);
+}
+
+.tb-grid-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.tb-grid-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.tb-entity-grid {
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+}
+
+.tb-card,
+.tb-entity {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: linear-gradient(145deg, rgba(var(--surface-rgb), 0.72), rgba(var(--void-rgb), 0.68));
+  box-shadow: inset 0 1px 0 rgba(var(--star-rgb), 0.04);
+}
+
+.tb-card::before,
+.tb-entity::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 31px;
+  height: 9px;
+  border-top: 1px solid var(--phosphor);
+  border-left: 1px solid var(--phosphor);
+  opacity: 0.55;
+}
+
+.tb-card {
+  padding: 16px;
+}
+
+.tb-card[data-action="open-root"],
+.tb-entity[data-action="open-entity"] {
+  cursor: pointer;
+}
+
+.tb-card[data-action="open-root"]:hover,
+.tb-entity:hover {
+  border-color: var(--line-strong);
+  background: linear-gradient(145deg, rgba(var(--surface-hover-rgb), 0.84), rgba(var(--abyss-rgb), 0.76));
+}
+
+.tb-card-title,
+.tb-section-title,
+.tb-entity-name {
+  color: var(--phosphor-hot);
+  font-family: var(--serif);
+  font-weight: 500;
+}
+
+.tb-card-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+  font-size: calc(15px * var(--font-scale));
+  letter-spacing: 0.06em;
+}
+
+.tb-card-code,
+.tb-count {
+  flex: 0 0 auto;
+  color: var(--dim);
+  font-family: var(--mono);
+  font-size: calc(8px * var(--font-scale));
+  letter-spacing: 0.12em;
+}
+
+.tb-section-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 21px 1px 10px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid var(--line);
+}
+
+.tb-section-title {
+  font-size: calc(16px * var(--font-scale));
+  letter-spacing: 0.08em;
+}
+
+.tb-section-meta {
+  color: var(--dim);
+  font-family: var(--mono);
+  font-size: calc(8px * var(--font-scale));
+  letter-spacing: 0.1em;
+}
+
+.tb-fact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
+  gap: 7px;
+}
+
+.tb-fact {
+  padding: 8px 9px;
+  border-left: 1px solid rgba(var(--accent-rgb), 0.22);
+  background: rgba(var(--accent-rgb), 0.045);
+}
+
+.tb-fact-label {
+  margin-bottom: 4px;
+  color: var(--dim);
+  font-family: var(--mono);
+  font-size: calc(8px * var(--font-scale));
+  letter-spacing: 0.08em;
+}
+
+.tb-fact-value {
+  overflow-wrap: anywhere;
+  color: var(--phosphor);
+  font-size: calc(12px * var(--font-scale));
+  line-height: 1.5;
+}
+
+.tb-summary {
+  color: var(--text-soft);
+  font-family: var(--serif);
+  font-size: calc(13px * var(--font-scale));
+  line-height: 1.8;
+}
+
+.tb-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tb-chip,
+.tb-status {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  border: 1px solid rgba(var(--accent-rgb), 0.22);
+  background: rgba(var(--accent-rgb), 0.07);
+  color: var(--text-soft);
+  font-family: var(--mono);
+  font-size: calc(9px * var(--font-scale));
+  line-height: 1.25;
+  letter-spacing: 0.04em;
+}
+
+.tb-chip {
+  padding: 4px 7px;
+}
+
+.tb-chip.danger,
+.tb-status.danger {
+  border-color: rgba(var(--danger-rgb), 0.36);
+  background: rgba(var(--danger-rgb), 0.09);
+  color: var(--red-hot);
+}
+
+.tb-chip.amber,
+.tb-status.amber {
+  border-color: rgba(var(--amber-rgb), 0.32);
+  background: rgba(var(--amber-rgb), 0.08);
+  color: var(--amber);
+}
+
+.tb-chip.cyan,
+.tb-status.cyan {
+  border-color: rgba(var(--cyan-rgb), 0.32);
+  background: rgba(var(--cyan-rgb), 0.08);
+  color: var(--cyan);
+}
+
+.tb-status {
+  flex: 0 0 auto;
+  padding: 3px 6px;
+  white-space: nowrap;
+}
+
+.tb-bars {
+  display: grid;
+  gap: 10px;
+}
+
+.tb-bar-row {
+  display: grid;
+  gap: 5px;
+}
+
+.tb-bar-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: calc(9px * var(--font-scale));
+  font-variant-numeric: tabular-nums;
+}
+
+.tb-bar {
+  height: 3px;
+  overflow: hidden;
+  background: rgba(var(--muted-rgb), 0.14);
+}
+
+.tb-bar-fill {
+  width: 0;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(var(--accent-rgb), 0.52), var(--phosphor));
+  box-shadow: 0 0 8px rgba(var(--accent-rgb), 0.42);
+  transition: width 500ms ease;
+}
+
+.tb-bar-fill.warn {
+  background: linear-gradient(90deg, rgba(var(--amber-rgb), 0.6), var(--amber));
+  box-shadow: 0 0 8px rgba(var(--amber-rgb), 0.32);
+}
+
+.tb-bar-fill.danger {
+  background: linear-gradient(90deg, rgba(var(--danger-rgb), 0.7), var(--red-hot));
+  box-shadow: 0 0 8px rgba(var(--danger-rgb), 0.36);
+}
+
+.tb-radar-wrap {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.85fr) minmax(150px, 1.15fr);
+  align-items: center;
+  gap: 8px;
+}
+
+.tb-radar {
+  display: block;
+  width: 100%;
+  max-width: 230px;
+  margin: 0 auto;
+}
+
+.tb-radar-block {
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+}
+
+.tb-radar-legend {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  justify-content: center;
+  gap: 3px 14px;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.03em;
+  color: var(--muted);
+}
+
+.tb-radar-legend span {
+  white-space: nowrap;
+}
+
+.tb-radar-legend b {
+  margin-right: 5px;
+  color: var(--red-hot);
+  font-weight: 700;
+}
+
+.tb-radar .grid {
+  fill: none;
+  stroke: rgba(var(--accent-rgb), 0.17);
+  stroke-width: 1;
+}
+
+.tb-radar .axis {
+  stroke: rgba(var(--accent-rgb), 0.13);
+  stroke-width: 1;
+}
+
+.tb-radar .shape {
+  fill: rgba(var(--danger-rgb), 0.13);
+  stroke: var(--red-hot);
+  stroke-width: 1.2;
+  filter: drop-shadow(0 0 5px rgba(var(--danger-rgb), 0.35));
+}
+
+.tb-radar text {
+  fill: var(--muted);
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.06em;
+}
+
+.tb-alert-list,
+.tb-plain-list {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tb-alert-list li,
+.tb-plain-list li {
+  position: relative;
+  padding-left: 14px;
+  color: var(--text-faint);
+  font-size: calc(11px * var(--font-scale));
+  line-height: 1.55;
+}
+
+.tb-alert-list li::before,
+.tb-plain-list li::before {
+  content: "";
+  position: absolute;
+  top: 0.62em;
+  left: 0;
+  width: 5px;
+  height: 1px;
+  background: var(--red);
+  box-shadow: 0 0 6px rgba(var(--danger-rgb), 0.52);
+}
+
+.tb-plain-list li::before {
+  background: var(--phosphor);
+  box-shadow: none;
+}
+
+.tb-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 13px;
+}
+
+.tb-search {
+  min-width: 0;
+  flex: 1 1 auto;
+  padding: 9px 11px;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  outline: none;
+  background: rgba(var(--abyss-rgb), 0.7);
+  color: var(--phosphor);
+  font-family: var(--mono);
+  font-size: calc(10px * var(--font-scale));
+}
+
+.tb-search:focus {
+  border-color: var(--line-strong);
+  box-shadow: 0 0 0 1px rgba(var(--accent-rgb), 0.08);
+}
+
+.tb-filter {
+  flex: 0 0 auto;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: calc(9px * var(--font-scale));
+}
+
+.tb-filter.active,
+.tb-filter:hover {
+  border-color: var(--line-strong);
+  background: rgba(var(--accent-rgb), 0.08);
+  color: var(--phosphor-hot);
+}
+
+.tb-entity {
+  min-width: 0;
+  padding: 13px;
+  transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
+}
+
+.tb-entity:hover {
+  transform: translateY(-1px);
+}
+
+.tb-entity-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.tb-entity-name {
+  min-width: 0;
+  overflow: hidden;
+  font-size: calc(14px * var(--font-scale));
+  letter-spacing: 0.04em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tb-entity-id {
+  margin-top: 3px;
+  color: var(--dim);
+  font-family: var(--mono);
+  font-size: calc(8px * var(--font-scale));
+}
+
+.tb-entity-body {
+  margin-top: 10px;
+  color: var(--text-faint);
+  font-size: calc(11px * var(--font-scale));
+  line-height: 1.62;
+}
+
+.tb-entity-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 11px;
+}
+
+.tb-presence {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.tb-presence::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 7px currentColor;
+}
+
+.tb-chain {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(176px, 1fr);
+  gap: 26px;
+  padding: 3px 2px 11px;
+  overflow-x: auto;
+  scrollbar-color: rgba(var(--accent-rgb), 0.28) transparent;
+}
+
+.tb-chain-node {
+  position: relative;
+  padding: 13px;
+  border: 1px solid var(--line);
+  background: rgba(var(--abyss-rgb), 0.78);
+  cursor: pointer;
+}
+
+.tb-chain-node:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: calc(100% + 1px);
+  width: 26px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--red), rgba(var(--danger-rgb), 0.12));
+}
+
+.tb-chain-node:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: calc(50% - 2px);
+  left: calc(100% + 21px);
+  width: 4px;
+  height: 4px;
+  border-top: 1px solid var(--red);
+  border-right: 1px solid var(--red);
+  transform: rotate(45deg);
+}
+
+.tb-chain-type {
+  color: var(--red-hot);
+  font-family: var(--mono);
+  font-size: calc(8px * var(--font-scale));
+  letter-spacing: 0.08em;
+}
+
+.tb-chain-title {
+  margin-top: 6px;
+  color: var(--phosphor-hot);
+  font-family: var(--serif);
+  font-size: calc(13px * var(--font-scale));
+  line-height: 1.45;
+}
+
+.tb-chain-meta {
+  margin-top: 8px;
+  color: var(--dim);
+  font-family: var(--mono);
+  font-size: calc(8px * var(--font-scale));
+}
+
+.tb-empty,
+.tb-loading {
+  display: grid;
+  padding: 34px 18px;
+  place-items: center;
+  border: 1px dashed var(--line);
+  color: var(--dim);
+  text-align: center;
+  font-family: var(--mono);
+  font-size: calc(10px * var(--font-scale));
+  letter-spacing: 0.08em;
+}
+
+.tb-loading-mark {
+  width: 34px;
+  aspect-ratio: 1;
+  margin-bottom: 11px;
+  border: 1px solid var(--line);
+  border-top-color: var(--phosphor);
+  border-radius: 50%;
+  animation: tb-spin 1.5s linear infinite;
+}
+
+@keyframes tb-spin {
+  to { transform: rotate(360deg); }
+}
+
+.tb-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 22px;
+  border-top: 1px solid var(--line);
+  background: rgba(var(--abyss-rgb), 0.62);
+  color: var(--dim);
+  font-family: var(--mono);
+  font-size: calc(8px * var(--font-scale));
+  letter-spacing: 0.08em;
+}
+
+.tb-footer-left {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tb-footer-tools,
+.tb-theme-switch {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+}
+
+.tb-footer-tools {
+  gap: 8px;
+}
+
+.tb-theme-switch {
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--line);
+  background: rgba(var(--abyss-rgb), 0.42);
+}
+
+.tb-theme-option {
+  display: grid;
+  width: 25px;
+  height: 21px;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: var(--dim);
+  cursor: pointer;
+  font-family: var(--serif);
+  font-size: calc(10px * var(--font-scale));
+  line-height: 1;
+}
+
+.tb-theme-option:hover {
+  color: var(--phosphor-hot);
+}
+
+.tb-theme-option.active {
+  background: rgba(var(--accent-rgb), 0.12);
+  color: var(--phosphor-hot);
+  box-shadow: inset 0 -1px 0 var(--phosphor);
+}
+
+.tb-refresh {
+  flex: 0 0 auto;
+  padding: 4px 7px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: calc(8px * var(--font-scale));
+}
+
+.tb-refresh:hover {
+  border-color: var(--line-strong);
+  color: var(--phosphor-hot);
+}
+
+.tb-modal {
+  position: absolute;
+  inset: 0;
+  z-index: 300;
+  display: none;
+  flex-direction: column;
+  background:
+    radial-gradient(circle at 80% 10%, rgba(var(--accent-rgb), 0.12), transparent 28%),
+    rgba(var(--void-rgb), 0.985);
+}
+
+.tb-modal.active {
+  display: flex;
+}
+
+.tb-modal-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 22px 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.tb-modal-title {
+  margin: 3px 0 0;
+  color: var(--phosphor-hot);
+  font-family: var(--serif);
+  font-size: calc(22px * var(--font-scale));
+  font-weight: 500;
+  letter-spacing: 0.07em;
+}
+
+.tb-modal-close {
+  flex: 0 0 auto;
+  width: 34px;
+  aspect-ratio: 1;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: var(--mono);
+}
+
+.tb-modal-close:hover {
+  border-color: rgba(var(--danger-rgb), 0.42);
+  color: var(--red-hot);
+}
+
+.tb-modal-body {
+  flex: 1 1 auto;
+  max-height: 720px;
+  padding: 18px 22px 28px;
+  overflow-y: auto;
+  scrollbar-color: rgba(var(--accent-rgb), 0.28) transparent;
+}
+
+.tb-detail-group {
+  margin-bottom: 11px;
+  border: 1px solid var(--line);
+  background: rgba(var(--surface-rgb), 0.5);
+}
+
+.tb-detail-group > summary {
+  padding: 11px 13px;
+  color: var(--phosphor-hot);
+  cursor: pointer;
+  font-family: var(--serif);
+  font-size: calc(13px * var(--font-scale));
+  letter-spacing: 0.05em;
+}
+
+.tb-detail-content {
+  padding: 0 13px 13px;
+}
+
+.tb-detail-row {
+  display: grid;
+  grid-template-columns: minmax(92px, 0.3fr) minmax(0, 0.7fr);
+  gap: 13px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(var(--accent-rgb), 0.1);
+}
+
+.tb-detail-row:last-child {
+  border-bottom: 0;
+}
+
+.tb-detail-key {
+  color: var(--dim);
+  font-family: var(--mono);
+  font-size: calc(9px * var(--font-scale));
+}
+
+.tb-detail-value {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: var(--text-soft);
+  font-size: calc(11px * var(--font-scale));
+  line-height: 1.65;
+}
+
+.tb-relation-strip {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  padding: 11px;
+  border: 1px solid var(--line);
+  background: rgba(var(--surface-rgb), 0.48);
+}
+
+.tb-relation-side {
+  min-width: 0;
+}
+
+.tb-relation-side:last-child {
+  text-align: right;
+}
+
+.tb-relation-arrow {
+  color: var(--red);
+  font-family: var(--mono);
+}
+
+.tb-error {
+  border-color: rgba(var(--danger-rgb), 0.36);
+  color: var(--red-hot);
+}
+
+@media (max-width: 760px) {
+  .tb-header {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 21px 18px 16px;
+  }
+
+  .tb-coordinate {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .tb-coordinate-text {
+    text-align: left;
+  }
+
+  .tb-orbit {
+    width: 62px;
+  }
+
+  .tb-main {
+    padding: 16px 14px;
+  }
+
+  .tb-hero-grid,
+  .tb-grid-2,
+  .tb-grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .tb-tab {
+    min-width: 90px;
+  }
+
+  .tb-radar-wrap {
+    grid-template-columns: minmax(150px, 0.8fr) minmax(130px, 1.2fr);
+  }
+
+  .tb-footer {
+    padding: 9px 14px;
+  }
+
+  .tb-footer-tools {
+    gap: 6px;
+  }
+}
+
+@media (max-width: 520px) {
+  html,
+  body {
+    font-size: calc(13px * var(--font-scale));
+  }
+
+  .tb-title {
+    font-size: 27px;
+  }
+
+  .tb-subtitle {
+    letter-spacing: 0.08em;
+  }
+
+  .tb-toolbar {
+    flex-wrap: wrap;
+  }
+
+  .tb-search {
+    flex-basis: 100%;
+  }
+
+  .tb-radar-wrap {
+    grid-template-columns: 1fr;
+  }
+
+  .tb-radar {
+    max-width: 200px;
+  }
+
+  .tb-entity-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tb-modal-head,
+  .tb-modal-body {
+    padding-right: 14px;
+    padding-left: 14px;
+  }
+
+  .tb-detail-row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .tb-relation-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .tb-relation-side:last-child {
+    text-align: left;
+  }
+
+  .tb-relation-arrow {
+    transform: rotate(90deg);
+  }
+}@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+  </style>
+</head>
+<body>
+  <div class="tb-frame" id="tb-frame">
+    <div class="tb-scan"></div>
+    <header class="tb-header">
+      <div>
+        <div class="tb-kicker"><span class="tb-live-dot"></span><span id="tb-source">MVU SIGNAL · ACQUIRING</span></div>
+        <h1 class="tb-title">Thiết bị quan sát Khu rừng Đen</h1>
+        <div class="tb-subtitle">RED COAST DEEP-SPACE ARRAY / TRISOLARIS OBSERVATORY</div>
+      </div>
+      <div class="tb-coordinate">
+        <div class="tb-coordinate-text">
+          <div class="tb-time" id="tb-time">Thời gian chưa rõ</div>
+          <div class="tb-location" id="tb-location">Tọa độ chưa khóa</div>
+        </div>
+        <div class="tb-orbit" id="tb-orbit" style="--p:0">
+          <span class="tb-orbit-value" id="tb-deviation">—</span>
+          <span class="tb-orbit-label">Độ lệch</span>
+        </div>
+      </div>
+    </header>
+
+    <nav class="tb-tabs" aria-label="Mục thanh trạng thái">
+      <button class="tb-tab active" type="button" data-tab="observation" data-code="01 / SIGNAL">Đài quan sát</button>
+      <button class="tb-tab" type="button" data-tab="protagonist" data-code="02 / SUBJECT">Nhân vật chính</button>
+      <button class="tb-tab" type="button" data-tab="people" data-code="03 / PERSONAE">Nhân vật</button>
+      <button class="tb-tab" type="button" data-tab="civilization" data-code="04 / DOMAIN">Tình hình văn minh</button>
+      <button class="tb-tab" type="button" data-tab="causality" data-code="05 / CASCADE">Chuỗi nhân quả</button>
+      <button class="tb-tab" type="button" data-tab="records" data-code="06 / ARCHIVE">Ghi chép</button>
+    </nav>
+
+    <main class="tb-main">
+      <section class="tb-panel active" id="tb-panel-observation"><div class="tb-loading"><div class="tb-loading-mark"></div>Đang tìm kiếm tín hiệu biến số</div></section>
+      <section class="tb-panel" id="tb-panel-protagonist"></section>
+      <section class="tb-panel" id="tb-panel-people"></section>
+      <section class="tb-panel" id="tb-panel-civilization"></section>
+      <section class="tb-panel" id="tb-panel-causality"></section>
+      <section class="tb-panel" id="tb-panel-records"></section>
+    </main>
+
+    <footer class="tb-footer">
+      <div class="tb-footer-left" id="tb-footer-status">Đang chờ MVU khởi tạo</div>
+      <div class="tb-footer-tools">
+        <div class="tb-theme-switch" role="group" aria-label="Màu sắc thiết bị">
+          <button class="tb-theme-option active" type="button" data-action="set-theme" data-theme-choice="night" aria-label="Chế độ ban đêm" aria-pressed="true" title="Chế độ ban đêm">Đêm</button>
+          <button class="tb-theme-option" type="button" data-action="set-theme" data-theme-choice="day" aria-label="Chế độ ban ngày" aria-pressed="false" title="Chế độ ban ngày">Ngày</button>
+          <button class="tb-theme-option" type="button" data-action="set-theme" data-theme-choice="tea" aria-label="Chế độ màu trà" aria-pressed="false" title="Chế độ màu trà">Trà</button>
+        </div>
+        <button class="tb-refresh" type="button" data-action="refresh">Lấy mẫu lại</button>
+      </div>
+    </footer>
+
+    <div class="tb-modal" id="tb-modal" aria-hidden="true">
+      <div class="tb-modal-head">
+        <div>
+          <div class="tb-eyebrow" id="tb-modal-code">ARCHIVE DETAIL</div>
+          <h2 class="tb-modal-title" id="tb-modal-title">Chi tiết hồ sơ</h2>
+        </div>
+        <button class="tb-modal-close" type="button" data-action="close-modal" aria-label="Đóng">×</button>
+      </div>
+      <div class="tb-modal-body" id="tb-modal-body"></div>
+    </div>
+  </div>
+
+  <script>
+window.ThreeBodyStatusbar = (() => {
+  const state = {
+    data: {},
+    tab: "observation",
+    npcFilter: "Tất cả",
+    npcSearch: "",
+    domainFilter: "Tất cả",
+    refreshing: false,
+    uidMap: new Map(),
+    entityIndex: new Map(),
+    preview: false,
+    cleanup: [],
+    timers: [],
+  };
+
+  const DICTIONARIES = [
+    "Nhân vật", "Mối quan hệ", "Tổ chức", "Văn minh", "Công nghệ", "Dự án", "Tài sản quan trọng", "Tình báo", "Giao tiếp", "Sự kiện nguyên tác", "Nhiệm vụ", "Lời hứa", "Tóm tắt ký ức",
+  ];
+
+  const $id = id => document.getElementById(id);
+
+  const esc = value => String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+
+  const asObject = value => value && typeof value === "object" && !Array.isArray(value) ? value : {};
+  const asArray = value => Array.isArray(value) ? value : value == null || value === "" ? [] : [value];
+  const entries = value => Object.entries(asObject(value));
+  const valueAt = (source, path, fallback = "") => {
+    const result = String(path).split(".").reduce((current, key) => current == null ? undefined : current[key], source);
+    return result === undefined || result === null || result === "" ? fallback : result;
+  };
+
+  const isBlank = value => {
+    if (value === undefined || value === null || value === "") return true;
+    if (Array.isArray(value)) return value.length === 0;
+    if (typeof value === "object") return Object.keys(value).length === 0;
+    return false;
+  };
+
+  const numeric = value => {
+    if (value === null || value === undefined || value === "") return null;
+    const number = Number(value);
+    return Number.isFinite(number) ? Math.max(0, Math.min(100, number)) : null;
+  };
+
+  const compact = (value, limit = 82) => {
+    const text = safeDisplay(value);
+    return text.length > limit ? `${text.slice(0, limit - 1)}…` : text;
+  };
+
+  const safeDisplay = (value, depth = 0) => {
+    if (value === null || value === undefined || value === "") return "Chưa ghi chép";
+    if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") return String(value);
+    if (depth >= 3) return "Ghi chép phức tạp";
+    if (Array.isArray(value)) return value.length ? value.map(item => safeDisplay(item, depth + 1)).join("、") : "Không";
+    const object = asObject(value);
+    const named = object['Tên'] || object['Họ tên'] || object['Tiêu đề'] || object['Tóm tắt'] || object['Mô tả'];
+    if (named) return safeDisplay(named, depth + 1);
+    const pairs = Object.entries(object).slice(0, 5).map(([key, item]) => `${key}: ${safeDisplay(item, depth + 1)}`);
+    return pairs.length ? pairs.join("；") : "Không";
+  };
+
+  const tone = value => {
+    const text = String(value ?? "");
+    if (/Tử vong|Sắp chết|Thù địch|Thất bại|Vô hiệu|Tiêu hủy|Hủy bỏ|Tuyệt mật|Không thể đảo ngược|Trọng đại|Mới tinh|Rủi ro cao|Bị chặn|Đã vi phạm/.test(text)) return "danger";
+    if (/Bị cản trở|Chờ đợi|Trì hoãn|Tiềm ẩn|Chưa rõ|Bị hạn chế|Mất tích|Tạm dừng|Chuẩn bị|Chờ xác minh|Có thể/.test(text)) return "amber";
+    if (/Từ xa|Truyền tải|Công nghệ|Thực nghiệm|Nguyên mẫu|Đang tiến hành|Đã nhận|Xác suất cao/.test(text)) return "cyan";
+    return "";
+  };
+
+  const status = value => `<span class="tb-status ${tone(value)}" title="${esc(safeDisplay(value))}">${esc(compact(value, 42))}</span>`;
+  const chip = (value, kind = "") => `<span class="tb-chip ${kind || tone(value)}" title="${esc(safeDisplay(value))}">${esc(compact(value, 34))}</span>`;
+  const chips = (values, emptyText = "Không có ghi chép") => {
+    const list = asArray(values).filter(item => !isBlank(item));
+    return list.length ? `<div class="tb-chips">${list.map(item => chip(item)).join("")}</div>` : `<span class="tb-count">${esc(emptyText)}</span>`;
+  };
+
+  const list = (values, alert = false, emptyText = "Tạm thời không có ghi chép") => {
+    const rows = asArray(values).filter(item => !isBlank(item));
+    if (!rows.length) return empty(emptyText);
+    return `<ul class="${alert ? "tb-alert-list" : "tb-plain-list"}">${rows.map(item => `<li>${esc(resolveUIDs(safeDisplay(item)))}</li>`).join("")}</ul>`;
+  };
+
+  const empty = message => `<div class="tb-empty">${esc(message)}</div>`;
+  const sectionHead = (title, meta = "") => `<div class="tb-section-head"><div class="tb-section-title">${esc(title)}</div><div class="tb-section-meta">${esc(meta)}</div></div>`;
+  const cardTitle = (title, code = "") => `<div class="tb-card-title"><span>${esc(title)}</span><span class="tb-card-code">${esc(code)}</span></div>`;
+  const fact = (label, value) => `<div class="tb-fact"><div class="tb-fact-label">${esc(label)}</div><div class="tb-fact-value">${esc(resolveUIDs(safeDisplay(value)))}</div></div>`;
+  const factGrid = rows => `<div class="tb-fact-grid">${rows.filter(([, value]) => !isBlank(value)).map(([label, value]) => fact(label, value)).join("") || fact("Ghi chép", "Chưa thiết lập")}</div>`;
+
+  const bar = (label, value, invert = false) => {
+    const number = numeric(value);
+    const shown = number === null ? "—" : `${Math.round(number)}%`;
+    const danger = number !== null && (invert ? number < 35 : number >= 70);
+    const warn = number !== null && !danger && (invert ? number < 60 : number >= 40);
+    return `<div class="tb-bar-row"><div class="tb-bar-head"><span>${esc(label)}</span><span>${shown}</span></div><div class="tb-bar"><div class="tb-bar-fill ${danger ? "danger" : warn ? "warn" : ""}" style="width:${number ?? 0}%"></div></div></div>`;
+  };
+
+  const locationText = location => {
+    const object = asObject(location);
+    const order = ["Hệ sao", "Thiên thể", "Quốc gia hoặc chính thể", "Khu vực", "Cơ sở hoặc vật mang", "Địa điểm cụ thể"];
+    const values = order.map(key => object[key]).filter(value => !isBlank(value));
+    return values.length ? values.join(" · ") : "Tọa độ chưa khóa";
+  };
+
+  const relationRefs = relation => [valueAt(relation, "A.UID", ""), valueAt(relation, "B.UID", "")].filter(Boolean);
+
+  const rebuildIndexes = data => {
+    state.uidMap.clear();
+    state.entityIndex.clear();
+    const protagonistName = valueAt(data, "Nhân vật chính.Thân phận.Họ tên", "Nhân vật chính");
+    state.uidMap.set("Nhân vật chính", protagonistName);
+    state.entityIndex.set("ROOT:Nhân vật chính", { kind: "Nhân vật chính", uid: "Nhân vật chính", value: asObject(data['Nhân vật chính']) });
+    state.entityIndex.set("ROOT:Tuyến thế giới", { kind: "Tuyến thế giới", uid: "Tuyến thế giới", value: asObject(data['Tuyến thế giới']) });
+    state.entityIndex.set("ROOT:Không thời gian", { kind: "Không thời gian", uid: "Không thời gian", value: asObject(data['Không thời gian']) });
+    state.entityIndex.set("ROOT:Bối cảnh", { kind: "Bối cảnh", uid: "Bối cảnh", value: asObject(data['Bối cảnh']) });
+
+    DICTIONARIES.forEach(kind => {
+      entries(data[kind]).forEach(([uid, value]) => {
+        const object = asObject(value);
+        const name = object['Tên'] || object['Họ tên'] || object['Tiêu đề'] || object['Nội dung'] || uid;
+        state.uidMap.set(uid, String(name));
+        state.entityIndex.set(`${kind}:${uid}`, { kind, uid, value: object });
+      });
+    });
+
+    entries(valueAt(data, "Nhân quả.Nút", {})).forEach(([uid, value]) => {
+      const object = asObject(value);
+      state.uidMap.set(uid, object['Tiêu đề'] || uid);
+      state.entityIndex.set(`Nút nhân quả:${uid}`, { kind: "Nút nhân quả", uid, value: object });
+    });
+    entries(valueAt(data, "Nhân quả.Cạnh", {})).forEach(([uid, value]) => state.entityIndex.set(`Cạnh nhân quả:${uid}`, { kind: "Cạnh nhân quả", uid, value: asObject(value) }));
+    entries(valueAt(data, "Nhân quả.Hiệu ứng trì hoãn", {})).forEach(([uid, value]) => {
+      const object = asObject(value);
+      state.uidMap.set(uid, object['Tên'] || uid);
+      state.entityIndex.set(`Hiệu ứng trì hoãn:${uid}`, { kind: "Hiệu ứng trì hoãn", uid, value: object });
+    });
+    entries(valueAt(data, "Nhân quả.Ảnh hưởng tương lai", {})).forEach(([uid, value]) => {
+      const object = asObject(value);
+      state.uidMap.set(uid, object['Tên'] || uid);
+      state.entityIndex.set(`Ảnh hưởng tương lai:${uid}`, { kind: "Ảnh hưởng tương lai", uid, value: object });
+    });
+  };
+
+  const resolveUID = uid => state.uidMap.get(String(uid)) || String(uid || "Đối tượng chưa rõ");
+  const resolveUIDs = text => {
+    let result = String(text ?? "");
+    const matches = result.match(/(?:person|relation|org|civ|tech|project|asset|intel|comm|event|cause|edge|delay|projection|task|promise|memory)_\d+/g) || [];
+    [...new Set(matches)].forEach(uid => {
+      const name = state.uidMap.get(uid);
+      if (name) result = result.replaceAll(uid, `${name}（${uid}）`);
+    });
+    return result;
+  };
+
+  const refText = value => {
+    if (typeof value === "string") return resolveUID(value);
+    const object = asObject(value);
+    return object['Tên'] || resolveUID(object.UID) || "Đối tượng chưa rõ";
+  };
+
+  const normalizeData = raw => {
+    const possibilities = [
+      raw?.stat_data,
+      raw?.data?.stat_data,
+      raw?.variables?.stat_data,
+      raw?.message?.data?.stat_data,
+      raw?.data,
+      raw,
+    ];
+    return possibilities.find(candidate => candidate && typeof candidate === "object" && (candidate['Không thời gian'] || candidate['Nhân vật chính'] || candidate['Nhân quả'])) || null;
+  };
+
+  const withTimeout = (promise, milliseconds) => Promise.race([
+    Promise.resolve(promise),
+    new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), milliseconds)),
+  ]);
+
+  const readGameData = async () => {
+    if (new URLSearchParams(location.search).get("preview") === "1") {
+      state.preview = true;
+      return typeof state.makePreviewData === "function" ? state.makePreviewData() : {};
+    }
+
+    state.preview = false;
+    if (typeof globalThis.waitGlobalInitialized === "function") {
+      try { await withTimeout(globalThis.waitGlobalInitialized("Mvu"), 2600); } catch {}
+    }
+
+    const ids = [];
+    if (typeof globalThis.getCurrentMessageId === "function") {
+      try {
+        const current = globalThis.getCurrentMessageId();
+        if (current !== undefined && current !== null) ids.push(current);
+      } catch {}
+    }
+
+    if (typeof globalThis.getChatMessages === "function") {
+      try {
+        const messages = await globalThis.getChatMessages("0-{{lastMessageId}}");
+        const assistant = asArray(messages).slice().reverse().find(message => message?.role === "assistant");
+        if (assistant?.message_id !== undefined) ids.push(assistant.message_id);
+      } catch {}
+    }
+
+    const uniqueIds = [...new Set(ids)];
+    if (globalThis.Mvu?.getMvuData) {
+      for (const messageId of uniqueIds) {
+        try {
+          const data = normalizeData(await globalThis.Mvu.getMvuData({ type: "message", message_id: messageId }));
+          if (data) return data;
+        } catch {}
+      }
+      try {
+        const data = normalizeData(await globalThis.Mvu.getMvuData("latest"));
+        if (data) return data;
+      } catch {}
+    }
+
+    if (typeof globalThis.getVariables === "function") {
+      const options = [
+        { type: "message", message_id: "latest" },
+        { type: "chat" },
+      ];
+      for (const option of options) {
+        try {
+          const data = normalizeData(await globalThis.getVariables(option));
+          if (data) return data;
+        } catch {}
+      }
+    }
+
+    return null;
+  };
+
+  const entityButton = (kind, uid, inner, extraClass = "") => `<article class="tb-entity ${extraClass}" data-action="open-entity" data-kind="${esc(kind)}" data-uid="${esc(uid)}">${inner}</article>`;
+  const rootCard = (root, inner, extraClass = "") => `<article class="tb-card ${extraClass}" data-action="open-root" data-root="${esc(root)}">${inner}</article>`;
+
+  const entityName = (kind, uid, object) => object['Tên'] || object['Họ tên'] || object['Tiêu đề'] || object['Nội dung'] || `${kind} ${uid}`;
+
+  const updateHeader = data => {
+    const time = asObject(data['Không thời gian']);
+    const date = time['Thời gian Công nguyên'] || time['Thời gian Kỷ nguyên'] || "Thời gian chưa rõ";
+    const era = [time['Kỷ nguyên chính'], time['Thời gian Kỷ nguyên']].filter(value => !isBlank(value) && value !== date).join(" · ");
+    $id("tb-time").textContent = era ? `${date} / ${era}` : date;
+    $id("tb-location").textContent = locationText(time['Địa điểm hiện tại']);
+    $id("tb-location").title = locationText(time['Địa điểm hiện tại']);
+    const deviation = numeric(valueAt(data, "Tuyến thế giới.Độ lệch tổng thể", null));
+    $id("tb-deviation").textContent = deviation === null ? "—" : String(Math.round(deviation));
+    $id("tb-orbit").style.setProperty("--p", String(deviation ?? 0));
+    $id("tb-source").textContent = state.preview ? "PREVIEW SIGNAL · SYNTHETIC" : "MVU SIGNAL · SYNCHRONIZED";
+  };
+
+  const updateFooter = data => {
+    const counts = [
+      ["Nhân vật", entries(data['Nhân vật']).length],
+      ["Nút nhân quả", entries(valueAt(data, "Nhân quả.Nút", {})).length],
+      ["Sự kiện nguyên tác", entries(data['Sự kiện nguyên tác']).length],
+      ["Nhiệm vụ", entries(data['Nhiệm vụ']).length],
+    ];
+    const prefix = state.preview ? "Dữ liệu xem trước" : "Liên kết chỉ đọc đã đồng bộ";
+    $id("tb-footer-status").textContent = `${prefix} · ${counts.map(([name, count]) => `${name} ${count}`).join(" · ")}`;
+  };
+
+  return {
+    state,
+    DICTIONARIES,
+    $id,
+    esc,
+    asObject,
+    asArray,
+    entries,
+    valueAt,
+    isBlank,
+    numeric,
+    compact,
+    safeDisplay,
+    tone,
+    status,
+    chip,
+    chips,
+    list,
+    empty,
+    sectionHead,
+    cardTitle,
+    fact,
+    factGrid,
+    bar,
+    locationText,
+    relationRefs,
+    rebuildIndexes,
+    resolveUID,
+    resolveUIDs,
+    refText,
+    readGameData,
+    entityButton,
+    rootCard,
+    entityName,
+    updateHeader,
+    updateFooter,
+  };
+})();
+
+((TB) => {
+  const {
+    state, $id, esc, asObject, asArray, entries, valueAt, isBlank, numeric, compact, safeDisplay,
+    status, chip, chips, list, empty, sectionHead, cardTitle, factGrid, bar, locationText,
+    resolveUID, resolveUIDs, entityButton, rootCard,
+  } = TB;
+
+  const radar = dimensions => {
+    const labels = ["Quỹ đạo nhân vật", "Mạng lưới quan hệ", "Chính sách tổ chức", "Công trình công nghệ", "Vận mệnh văn minh"];
+    const shortLabels = ["QĐ", "QH", "CS", "CN", "VM"]; // Viết tắt để không bị tràn/cắt chữ trên biểu đồ
+    const center = 112; // Khôi phục tâm đối xứng như bản gốc
+    const radius = 72;  // Khôi phục bán kính gốc
+    const point = (index, amount) => {
+      const angle = -Math.PI / 2 + index * Math.PI * 2 / labels.length;
+      const scaled = radius * amount;
+      return [center + Math.cos(angle) * scaled, center + Math.sin(angle) * scaled];
+    };
+    const polygon = amount => labels.map((_, index) => point(index, amount).join(",")).join(" ");
+    const shape = labels.map((label, index) => point(index, (numeric(dimensions[label]) ?? 0) / 100).join(",")).join(" ");
+    const axes = labels.map((_, index) => {
+      const [x, y] = point(index, 1);
+      return `<line class="axis" x1="${center}" y1="${center}" x2="${x}" y2="${y}"></line>`;
+    }).join("");
+    const texts = labels.map((label, index) => {
+      const [x, y] = point(index, 1.25);
+      const anchor = x < center - 12 ? "end" : x > center + 12 ? "start" : "middle";
+      return `<text x="${x}" y="${y}" text-anchor="${anchor}" dominant-baseline="middle">${esc(shortLabels[index])}</text>`;
+    }).join("");
+    const svg = `<svg class="tb-radar" viewBox="0 0 224 224" role="img" aria-label="Biểu đồ radar độ lệch tuyến thế giới"><polygon class="grid" points="${polygon(1)}"></polygon><polygon class="grid" points="${polygon(0.75)}"></polygon><polygon class="grid" points="${polygon(0.5)}"></polygon><polygon class="grid" points="${polygon(0.25)}"></polygon>${axes}<polygon class="shape" points="${shape}"></polygon>${texts}</svg>`;
+    const legend = `<div class="tb-radar-legend">${labels.map((label, index) => `<span><b>${esc(shortLabels[index])}</b>${esc(label)}</span>`).join("")}</div>`;
+    return `<div class="tb-radar-block">${svg}${legend}</div>`;
+  };
+
+  const renderObservation = data => {
+    const time = asObject(data['Không thời gian']);
+    const scene = asObject(data['Bối cảnh']);
+    const worldline = asObject(data['Tuyến thế giới']);
+    const dimensions = asObject(worldline['Chiều độ lệch']);
+    const events = entries(data['Sự kiện nguyên tác']);
+    const activeEvents = events.filter(([, event]) => !["Đã hoàn thành", "Kết quả hoàn thành tương đương"].includes(event['Trạng thái hiện tại'])).slice(0, 4);
+    const delayed = entries(valueAt(data, "Nhân quả.Hiệu ứng trì hoãn", {})).filter(([, item]) => !["Vô hiệu", "Lưu trữ"].includes(item['Trạng thái']));
+    const future = entries(valueAt(data, "Nhân quả.Ảnh hưởng tương lai", {}));
+    const currentEvent = scene['Tên sự kiện hiện tại'] || resolveUID(scene['UID sự kiện hiện tại']) || "Sự kiện chưa khóa";
+
+    const worldlineCard = rootCard("Tuyến thế giới", `${cardTitle("Bản đồ can thiệp tuyến thế giới", "WORLDLINE")}
+      <div class="tb-radar-wrap">
+        ${radar(dimensions)}
+        <div>
+          <div class="tb-summary">Tuyến thế giới hiện tại：${esc(worldline['Tuyến thế giới hiện tại'] || "Đường cơ sở nguyên tác")}</div>
+          <div class="tb-chips" style="margin-top:9px">${status(worldline['Phân loại'] || "Tạm thời không thể phán đoán")}${chip(`Điểm neo chung · ${worldline['Điểm neo chung gần nhất'] || "Chưa rõ"}`)}</div>
+          <div class="tb-bars" style="margin-top:13px">${Object.entries(dimensions).map(([key, value]) => bar(key, value)).join("") || bar("Độ lệch tổng thể", worldline['Độ lệch tổng thể'])}</div>
+        </div>
+      </div>`);
+
+    const sceneCard = rootCard("Cảnh", `${cardTitle(scene['Tiêu đề'] || "Trường quan sát hiện tại", "SCENE")}
+      <div class="tb-summary">${esc(currentEvent)}</div>
+      <div style="margin-top:12px">${factGrid([
+        ["Giai đoạn tự sự", scene['Giai đoạn tự sự']],
+        ["Môi trường xã hội", scene['Môi trường xã hội']],
+        ["Trực tiếp có mặt", asArray(scene['UID người trực tiếp có mặt']).length],
+        ["Tham gia từ xa", asArray(scene['UID người tham gia từ xa']).length],
+        ["Ảnh hưởng vắng mặt", asArray(scene['UID người ảnh hưởng vắng mặt']).length],
+        ["Độ trễ giao tiếp", time['Độ trễ giao tiếp']],
+      ])}</div>
+      <div style="margin-top:12px">${chips([time['Chiều không gian'], time['Trạng thái khu vực tốc độ ánh sáng thấp'], time['Trạng thái tiểu vũ trụ']].filter(Boolean))}</div>`);
+
+    const signalCard = `<article class="tb-card">${cardTitle("Rủi ro cục bộ và ranh giới thông tin", "SIGNAL NOISE")}
+      <div class="tb-grid-2">
+        <div><div class="tb-eyebrow" style="margin-bottom:8px">RISK</div>${list(scene['Rủi ro hiện tại'], true, "Hiện chưa nhận diện được rủi ro đáng kể")}</div>
+        <div><div class="tb-eyebrow" style="margin-bottom:8px">BLIND ZONE</div>${list(scene['Ranh giới thông tin'], false, "Ranh giới thông tin chưa được thiết lập")}</div>
+      </div>
+      ${!isBlank(scene['Hạn chế hành động']) ? `<div style="margin-top:13px">${chips(scene['Hạn chế hành động'])}</div>` : ""}
+    </article>`;
+
+    const evidenceCard = `<article class="tb-card">${cardTitle("Bằng chứng có thể thấy", "EVIDENCE")}
+      ${entries(scene['Bằng chứng có thể thấy']).length ? factGrid(entries(scene['Bằng chứng có thể thấy'])) : empty("Cảnh hiện tại không có bằng chứng có thể thấy đã đăng ký")}
+    </article>`;
+
+    const eventCards = activeEvents.length ? activeEvents.map(([uid, event]) => entityButton("Sự kiện nguyên tác", uid, `
+      <div class="tb-entity-head"><div><div class="tb-entity-name">${esc(event['Tên'] || uid)}</div><div class="tb-entity-id">${esc(uid)} · ${esc(event['Thời gian nguyên tác'] || "Thời gian chưa rõ")}</div></div>${status(event['Trạng thái hiện tại'])}</div>
+      <div class="tb-entity-body">${esc(compact(event['Kết quả dự kiến hiện tại'] || event['Kết quả nguyên tác'] || "Kết quả chưa được chiếu", 78))}</div>
+      <div class="tb-entity-foot">${chip(`Độ tin cậy ${numeric(event['Độ tin cậy']) ?? "—"}%`)}${asArray(event['Nguyên nhân lệch']).slice(0, 1).map(item => chip(item, "danger")).join("")}</div>`)).join("") : empty("Chưa tải điểm neo sự kiện nguyên tác");
+
+    const latencyCard = `<article class="tb-card">${cardTitle("Giám sát hiệu ứng trì hoãn", "DELAYED CASCADE")}
+      ${delayed.length ? delayed.slice(0, 4).map(([uid, item]) => `<div class="tb-detail-row" data-action="open-entity" data-kind="Hiệu ứng trì hoãn" data-uid="${esc(uid)}" style="cursor:pointer"><div class="tb-detail-key">${esc(item['Thời gian dự kiến'] || "Thời khắc chưa rõ")}</div><div class="tb-detail-value"><div style="display:flex;justify-content:space-between;gap:8px"><span>${esc(item['Tên'] || uid)}</span>${status(item['Trạng thái'])}</div><div class="tb-count" style="margin-top:4px">${esc(compact(asArray(item['Kết quả dự kiến']).join("；") || "Kết quả chưa rõ", 74))}</div></div></div>`).join("") : empty("Hiện tại không có hiệu ứng trì hoãn tiềm ẩn")}
+    </article>`;
+
+    $id("tb-panel-observation").innerHTML = `
+      <div class="tb-hero-grid">${worldlineCard}${sceneCard}</div>
+      ${sectionHead("Quan sát cảnh", `${locationText(time['Địa điểm hiện tại'])} · ${time['Hệ quy chiếu'] || "Hệ quy chiếu chưa rõ"}`)}
+      <div class="tb-grid-2">${signalCard}${evidenceCard}</div>
+      ${sectionHead("Cửa sổ sự kiện nguyên tác", `${activeEvents.length}/${events.length} sự kiện chờ xử lý`)}
+      <div class="tb-entity-grid">${eventCards}</div>
+      ${sectionHead("Lan truyền thời gian sâu", `${delayed.length} hiệu ứng trì hoãn · ${future.length} hình chiếu tương lai`)}
+      ${latencyCard}`;
+  };
+
+  const renderMapBars = (object, invertKeys = []) => {
+    const rows = entries(object).filter(([, value]) => numeric(value) !== null);
+    return rows.length ? `<div class="tb-bars">${rows.map(([key, value]) => bar(key, value, invertKeys.includes(key))).join("")}</div>` : empty("Chưa có ghi chép định lượng");
+  };
+
+  const renderProtagonist = data => {
+    const protagonist = asObject(data['Nhân vật chính']);
+    const identity = asObject(protagonist['Thân phận']);
+    const traveler = asObject(protagonist['Thông tin xuyên không']);
+    const body = asObject(protagonist['Cơ thể']);
+    const mind = asObject(protagonist['Tâm lý và giá trị']);
+    const ability = asObject(protagonist['Năng lực']);
+    const knowledge = asObject(protagonist['Kiến thức']);
+    const influence = asObject(protagonist['Ảnh hưởng xã hội']);
+    const intention = asObject(protagonist['Ý đồ và trách nhiệm']);
+    const appearance = asObject(protagonist['Ngoại hình']);
+    const mode = identity['Chế độ thân phận'] || "Chưa xác định";
+
+    const identityCard = rootCard("Nhân vật chính", `${cardTitle(identity['Họ tên'] || "Đối tượng quan sát chưa đặt tên", "PRIMARY SUBJECT")}
+      <div class="tb-chips">${status(mode)}${status(body['Trạng thái sinh tồn'] || "Sống sót")}${status(body['Trạng thái ngủ đông'] || "Chưa ngủ đông")}</div>
+      <div style="margin-top:13px">${factGrid([
+        ["Ánh xạ nguyên tác", identity['Ánh xạ nguyên tác']], ["Tuổi", identity['Tuổi']], ["Thuộc về văn minh", identity['Quốc tịch hoặc thuộc về văn minh']],
+        ["Nghề nghiệp", identity['Nghề nghiệp']], ["Thân phận công khai", identity['Thân phận công khai']], ["Thân phận thực sự", identity['Thân phận thực sự']],
+      ])}</div>
+      <div class="tb-summary" style="margin-top:13px">${esc(protagonist['Tóm tắt hoàn cảnh hiện tại'] || "Tóm tắt hoàn cảnh chưa được thiết lập")}</div>`);
+
+    const appearanceCard = `<article class="tb-card">${cardTitle("Ngoại hình và cơ thể", "PHYSICAL")}
+      ${factGrid([
+        ["Đặc điểm cố định", appearance['Đặc điểm cố định']], ["Ngoại hình hiện tại", appearance['Ngoại hình hiện tại']], ["Trang phục hiện tại", appearance['Trang phục hiện tại']],
+        ["Tổng quan sức khỏe", body['Tổng quan sức khỏe']], ["Thương thế", body['Thương thế']], ["Bệnh tật", body['Bệnh tật']], ["Cải tạo cơ thể", body['Cải tạo cơ thể']],
+      ])}
+    </article>`;
+
+    const travelerCard = mode === "Người xuyên không" ? `<article class="tb-card">${cardTitle("Hồ sơ nguồn gốc người xuyên không", "EXOGENOUS")}
+      ${factGrid([
+        ["Thế giới nguồn gốc", traveler['Thế giới nguồn gốc']], ["Phương thức xuyên không", traveler['Phương thức xuyên không']], ["Đến", traveler['Thời gian và địa điểm đến']],
+        ["Ngụy trang thân phận", traveler['Ngụy trang thân phận']], ["Phạm vi siêu kiến thức", traveler['Phạm vi siêu kiến thức']], ["Trải nghiệm kiếp trước", traveler['Tóm tắt trải nghiệm kiếp trước']],
+      ])}
+      <div class="tb-bars" style="margin-top:12px">${bar("Độ tin cậy siêu kiến thức", traveler['Độ tin cậy siêu kiến thức'], true)}${bar("Độ lộ siêu kiến thức", traveler['Độ lộ siêu kiến thức'])}</div>
+    </article>` : "";
+
+    const mindCard = `<article class="tb-card">${cardTitle("Dạng sóng tâm lý", "PSYCHOMETRY")}
+      <div class="tb-summary">${esc([mind['Cảm xúc hiện tại'], mind['Tâm trạng dài hạn']].filter(Boolean).join(" · ") || "Chỉ số tâm lý chưa được thiết lập")}</div>
+      <div style="margin-top:12px">${renderMapBars({ "Áp lực": mind['Áp lực'], "Sợ hãi": mind['Sợ hãi'], "Hy vọng": mind['Hy vọng'], "Ý chí": mind['Ý chí'], "Tinh thần trách nhiệm": mind['Tinh thần trách nhiệm'], "Cảm giác tội lỗi": mind['Cảm giác tội lỗi'] }, ["Hy vọng", "Ý chí", "Tinh thần trách nhiệm"])}</div>
+      <div style="margin-top:12px">${chips([...(asArray(mind['Giá trị quan'])), ...(Object.keys(asObject(mind['Niềm tin'])))])}</div>
+    </article>`;const influenceCard = `<article class="tb-card">${cardTitle("Ảnh hưởng xã hội", "EXPOSURE")}
+      ${renderMapBars(influence)}
+      ${entries(influence['Danh tiếng theo tổ chức']).length ? `<div style="margin-top:12px">${factGrid(entries(influence['Danh tiếng theo tổ chức']).map(([uid, value]) => [resolveUID(uid), `${numeric(value) ?? "—"}%`]))}</div>` : ""}
+    </article>`;
+
+    const abilityCard = `<article class="tb-card">${cardTitle("Năng lực và kinh nghiệm", "CAPABILITY")}
+      <div class="tb-summary">${esc(ability['Tóm tắt kinh nghiệm'] || "Tóm tắt kinh nghiệm chưa được thiết lập")}</div>
+      <div style="margin-top:12px">${renderMapBars({ ...asObject(ability['Lĩnh vực chuyên môn']), ...asObject(ability['Kỹ năng']), ...asObject(ability['Ngôn ngữ']) })}</div>
+      <div style="margin-top:12px">${chips([...(asArray(ability['Quá trình giáo dục'])), ...(asArray(ability['Bằng cấp và giấy phép']))])}</div>
+    </article>`;
+
+    const knowledgeCard = `<article class="tb-card">${cardTitle("Ranh giới kiến thức", "EPISTEMIC MAP")}
+      ${factGrid([
+        ["Tình báo đã biết", asArray(knowledge['UID tình báo đã biết']).map(resolveUID)], ["Nghi ngờ", knowledge['Nghi ngờ']], ["Tin lầm", knowledge['Tin lầm']],
+        ["Ranh giới chưa biết", knowledge['Ranh giới chưa biết']], ["Thông tin bảo mật", knowledge['Thông tin bảo mật']],
+      ])}
+    </article>`;
+
+    const intentionCard = `<article class="tb-card">${cardTitle("Ý định và trách nhiệm nhân quả", "INTENT VECTOR")}
+      <div class="tb-entity-head"><div class="tb-summary">${esc(intention['Hành động hiện tại'] || "Chưa có hành động rõ ràng")}</div>${status(intention['Giai đoạn hành động'] || "Chưa bắt đầu")}</div>
+      <div style="margin-top:12px">${factGrid([
+        ["Mục tiêu ngắn hạn", intention['Mục tiêu ngắn hạn']], ["Mục tiêu trung hạn", intention['Mục tiêu trung hạn']], ["Mục tiêu dài hạn", intention['Mục tiêu dài hạn']],
+        ["Rủi ro đã biết", intention['Rủi ro đã biết']], ["Hậu quả chưa giải quyết", intention['Hậu quả chưa giải quyết']],
+        ["Nhiệm vụ", asArray(intention['UID nhiệm vụ']).map(resolveUID)], ["Cam kết", asArray(intention['UID cam kết']).map(resolveUID)],
+        ["Nút trách nhiệm", asArray(intention['UID nút trách nhiệm nhân quả']).map(resolveUID)],
+      ])}</div>
+    </article>`;
+
+    $id("tb-panel-protagonist").innerHTML = `
+      <div class="tb-hero-grid">${identityCard}${mindCard}</div>
+      ${travelerCard ? `${sectionHead("Chỉ số bất thường danh tính", "Chế độ người xuyên không đã kích hoạt")}${travelerCard}` : ""}
+      ${sectionHead("Trạng thái chủ thể", `${mode} · Độ lộ danh tính ${numeric(identity['Độ lộ danh tính']) ?? "—"}%`)}
+      <div class="tb-grid-2">${appearanceCard}${influenceCard}</div>
+      ${sectionHead("Nhận thức và hành động", `${asArray(protagonist['UID quan hệ']).length} mối quan hệ · ${asArray(protagonist['UID người liên hệ']).length} người liên hệ`)}
+      <div class="tb-grid-3">${abilityCard}${knowledgeCard}${intentionCard}</div>`;
+  };
+
+  const npcPresence = npc => npc['Hình thức có mặt'] || (npc['Có mặt không'] ? "Có mặt trực tiếp" : "Chưa tham gia");
+
+  const relatedRelations = (data, uid) => entries(data['Quan hệ']).filter(([, relation]) => {
+    const refs = [valueAt(relation, "A.UID", ""), valueAt(relation, "B.UID", "")];
+    return refs.includes(uid);
+  });
+
+  const npcCard = (data, uid, npc) => {
+    const presence = npcPresence(npc);
+    const relations = relatedRelations(data, uid);
+    const organizationNames = asArray(npc['UID tổ chức hiện tại']).map(resolveUID);
+    const body = asObject(npc['Cơ thể']);
+    const summary = npc['Tóm tắt hoàn cảnh hiện tại'] || npc['Tóm tắt nhân vật'] || asArray(npc['Mục tiêu hiện tại']).join("；") || "Tóm tắt nhân vật chưa được thiết lập";
+    return entityButton("Nhân vật", uid, `
+      <div class="tb-entity-head"><div><div class="tb-entity-name">${esc(npc['Họ tên'] || uid)}</div><div class="tb-entity-id">${esc(uid)} · ${esc(npc['Ánh xạ nguyên tác'] || "Không ánh xạ nguyên tác")}</div></div>${status(npc['Vòng đời'] || "Hoạt động")}</div>
+      <div class="tb-entity-body">${esc(compact(summary, 90))}</div>
+      <div class="tb-entity-foot"><span class="tb-chip tb-presence ${presence === "Có mặt trực tiếp" ? "" : presence === "Tham gia từ xa" ? "cyan" : presence === "Ảnh hưởng vắng mặt" ? "amber" : ""}">${esc(presence)}</span>${status(body['Trạng thái sinh tồn'] || "Sống sót")}${organizationNames.slice(0, 1).map(name => chip(name)).join("")}${chip(`${relations.length} mối quan hệ`)}</div>`);
+  };
+
+  const renderPeople = data => {
+    const all = entries(data['Nhân vật']);
+    const query = state.npcSearch.trim().toLowerCase();
+    const visible = all.filter(([uid, npc]) => {
+      const presence = npcPresence(npc);
+      const matchesFilter = state.npcFilter === "Tất cả" || state.npcFilter === presence || (state.npcFilter === "Hồ sơ khác" && presence === "Chưa tham gia");
+      const haystack = `${uid} ${npc['Họ tên'] || ""} ${npc['Ánh xạ nguyên tác'] || ""} ${safeDisplay(npc['Nghề nghiệp và danh tính'])} ${safeDisplay(npc['UID tổ chức hiện tại'])}`.toLowerCase();
+      return matchesFilter && (!query || haystack.includes(query));
+    });
+    const direct = all.filter(([, npc]) => npcPresence(npc) === "Có mặt trực tiếp").length;
+    const remote = all.filter(([, npc]) => npcPresence(npc) === "Tham gia từ xa").length;
+    const absent = all.filter(([, npc]) => npcPresence(npc) === "Ảnh hưởng vắng mặt").length;
+    const filters = ["Tất cả", "Có mặt trực tiếp", "Tham gia từ xa", "Ảnh hưởng vắng mặt", "Hồ sơ khác"];
+
+    $id("tb-panel-people").innerHTML = `
+      <div class="tb-toolbar">
+        <input class="tb-search" id="tb-npc-search" type="search" value="${esc(state.npcSearch)}" placeholder="Tìm kiếm họ tên, danh tính, tổ chức hoặc UID" aria-label="Tìm kiếm nhân vật">
+        ${filters.map(filter => `<button class="tb-filter ${state.npcFilter === filter ? "active" : ""}" type="button" data-action="npc-filter" data-filter="${esc(filter)}">${esc(filter)}</button>`).join("")}
+      </div>
+      <div class="tb-card" style="margin-bottom:13px">${cardTitle("Tín hiệu nhân sự hiện trường", "PRESENCE MATRIX")}${factGrid([
+        ["Có mặt trực tiếp", direct], ["Tham gia từ xa", remote], ["Ảnh hưởng vắng mặt", absent], ["Tổng số hồ sơ nhân vật", all.length], ["Ghi chép quan hệ", entries(data['Quan hệ']).length],
+      ])}</div>
+      ${sectionHead("Hồ sơ nhân vật", `Hiện đang hiển thị ${visible.length}/${all.length}`)}
+      <div class="tb-entity-grid">${visible.length ? visible.map(([uid, npc]) => npcCard(data, uid, npc)).join("") : empty("Không có nhân vật nào phù hợp với điều kiện lọc hiện tại")}</div>`;
+
+    const search = $id("tb-npc-search");
+    if (search) {
+      search.addEventListener("input", event => {
+        state.npcSearch = event.target.value;
+        clearTimeout(state.npcSearchTimer);
+        state.npcSearchTimer = setTimeout(() => renderPeople(state.data), 120);
+      });
+    }
+  };
+
+  TB.renderObservation = renderObservation;
+  TB.renderProtagonist = renderProtagonist;
+  TB.renderPeople = renderPeople;
+  TB.relatedRelations = relatedRelations;
+})(window.ThreeBodyStatusbar);
+
+((TB) => {
+  const {
+    state, $id, esc, asObject, asArray, entries, valueAt, isBlank, numeric, compact, safeDisplay,
+    status, chip, chips, list, empty, sectionHead, cardTitle, factGrid, bar, resolveUID, resolveUIDs,
+    refText, entityButton, rootCard, entityName,
+  } = TB;
+
+  const domainCard = (kind, uid, item) => {
+    const name = entityName(kind, uid, item);
+    if (kind === "Tổ chức") {
+      return entityButton(kind, uid, `<div class="tb-entity-head"><div><div class="tb-entity-name">${esc(name)}</div><div class="tb-entity-id">${esc(uid)} · ${esc(item['Loại hình'] || "Tổ chức")}</div></div>${status(item['Trạng thái'])}</div><div class="tb-entity-body">${esc(compact(item['Phản hồi hiện tại'] || item['Tóm tắt'] || asArray(item['Mục tiêu thực sự']).join("；") || "Tạm thời không có ghi chép phản hồi", 86))}</div><div class="tb-bars" style="margin-top:10px">${bar("Sức ảnh hưởng", item['Sức ảnh hưởng'])}${bar("Sức gắn kết", item['Sức gắn kết'], true)}${bar("Mức độ bảo mật", item['Mức độ bảo mật'])}</div>`);
+    }
+    if (kind === "Nền văn minh") {
+      return entityButton(kind, uid, `<div class="tb-entity-head"><div><div class="tb-entity-name">${esc(name)}</div><div class="tb-entity-id">${esc(uid)} · ${esc(item['Loài hoặc cấu tạo'] || "Nền văn minh")}</div></div>${status(item['Trạng thái hiện tại'] || "Trạng thái chưa biết")}</div><div class="tb-entity-body">${esc(compact(item['Hoàn cảnh sinh tồn'] || item['Tóm tắt'] || "Hoàn cảnh sinh tồn chưa được thiết lập", 86))}</div><div class="tb-bars" style="margin-top:10px">${bar("Sức ảnh hưởng tổng hợp", item['Sức ảnh hưởng tổng hợp'])}${bar("Mức độ đe dọa", item['Mức độ đe dọa'])}${bar("Độ lộ thông tin", item['Độ lộ thông tin'])}</div>`);
+    }
+    if (kind === "Công nghệ") {
+      return entityButton(kind, uid, `<div class="tb-entity-head"><div><div class="tb-entity-name">${esc(name)}</div><div class="tb-entity-id">${esc(uid)} · ${esc(item['Thể loại'] || "Công nghệ")}</div></div>${status(item['Giai đoạn'])}</div><div class="tb-entity-body">${esc(compact(item['Tóm tắt nguyên lý'] || item['Tóm tắt trạng thái hiện tại'] || "Tóm tắt nguyên lý chưa được thiết lập", 86))}</div><div class="tb-bars" style="margin-top:10px">${bar("Độ trưởng thành", item['Độ trưởng thành'])}${bar("Độ kiểm soát", item['Độ kiểm soát'], true)}${bar("Độ khuếch tán", item['Độ khuếch tán'])}</div>`);
+    }
+    if (kind === "Dự án") {
+      return entityButton(kind, uid, `<div class="tb-entity-head"><div><div class="tb-entity-name">${esc(name)}</div><div class="tb-entity-id">${esc(uid)} · ${esc(item['Loại hình'] || "Dự án")}</div></div>${status(item['Trạng thái'])}</div><div class="tb-entity-body">${esc(compact(item['Tóm tắt'] || asArray(item['Mục tiêu']).join("；") || "Mục tiêu dự án chưa được thiết lập", 86))}</div><div class="tb-bars" style="margin-top:10px">${bar("Tiến độ dự án", item['Tiến độ'])}${bar("Mức độ bảo mật", item['Mức độ bảo mật'])}</div>`);
+    }
+    return entityButton(kind, uid, `<div class="tb-entity-head"><div><div class="tb-entity-name">${esc(name)}</div><div class="tb-entity-id">${esc(uid)} · ${esc(item['Loại hình'] || "Tài sản")}</div></div>${status(item['Trạng thái'])}</div><div class="tb-entity-body">${esc(compact(item['Tóm tắt trạng thái hiện tại'] || asArray(item['Chức năng']).join("；") || "Trạng thái tài sản chưa được thiết lập", 86))}</div><div class="tb-entity-foot">${chip(`Độ quan trọng ${numeric(item['Độ quan trọng']) ?? "—"}%`)}${chip(`Độ lộ ${numeric(item['Độ lộ']) ?? "—"}%`, numeric(item['Độ lộ']) >= 70 ? "danger" : "")}</div>`);
+  };
+
+  const renderCivilization = data => {
+    const source = [
+      ["Tổ chức", entries(data['Tổ chức'])],
+      ["Nền văn minh", entries(data['Nền văn minh'])],
+      ["Công nghệ", entries(data['Công nghệ'])],
+      ["Dự án", entries(data['Dự án'])],
+      ["Tài sản quan trọng", entries(data['Tài sản quan trọng'])],
+    ];
+    const filters = ["Tất cả", ...source.map(([kind]) => kind)];
+    const visible = source.filter(([kind]) => state.domainFilter === "Tất cả" || state.domainFilter === kind);
+    const civThreat = entries(data['Nền văn minh']).sort((a, b) => (numeric(b[1]['Mức độ đe dọa']) ?? -1) - (numeric(a[1]['Mức độ đe dọa']) ?? -1))[0];
+    const activeProjects = entries(data['Dự án']).filter(([, item]) => ["Chuẩn bị", "Đang tiến hành", "Bị cản trở", "Tạm dừng"].includes(item['Trạng thái']));
+    const exposedTech = entries(data['Công nghệ']).filter(([, item]) => (numeric(item['Độ khuếch tán']) ?? 0) >= 60);
+
+    const summary = `<div class="tb-grid-3">
+      <article class="tb-card">${cardTitle("Đỉnh điểm đe dọa văn minh", "THREAT INDEX")}${civThreat ? `<div class="tb-summary">${esc(civThreat[1]['Tên'] || civThreat[0])}</div><div style="margin-top:12px">${bar("Mức độ đe dọa", civThreat[1]['Mức độ đe dọa'])}</div>` : empty("Hồ sơ văn minh chưa được thiết lập")}</article>
+      <article class="tb-card">${cardTitle("Xung nhịp công trình", "PROJECT PULSE")}<div class="tb-summary">${activeProjects.length} dự án đang trong cửa sổ hoạt động</div><div style="margin-top:12px">${chips(activeProjects.slice(0, 3).map(([, item]) => item['Tên']))}</div></article>
+      <article class="tb-card">${cardTitle("Khuếch tán công nghệ", "DIFFUSION")}<div class="tb-summary">${exposedTech.length} công nghệ đạt ngưỡng khuếch tán cao</div><div style="margin-top:12px">${chips(exposedTech.slice(0, 3).map(([, item]) => item['Tên']))}</div></article>
+    </div>`;
+
+    $id("tb-panel-civilization").innerHTML = `
+      <div class="tb-toolbar">${filters.map(filter => `<button class="tb-filter ${state.domainFilter === filter ? "active" : ""}" type="button" data-action="domain-filter" data-filter="${esc(filter)}">${esc(filter)}</button>`).join("")}</div>
+      ${summary}
+      ${visible.map(([kind, records]) => `${sectionHead(kind, `${records.length} bản hồ sơ`)}<div class="tb-entity-grid">${records.length ? records.map(([uid, item]) => domainCard(kind, uid, item)).join("") : empty(`${kind} hồ sơ trống`)}</div>`).join("")}`;
+  };
+
+  const causalChain = data => {
+    const nodes = asObject(valueAt(data, "Nhân quả.Nút", {}));
+    const main = asArray(valueAt(data, "Nhân quả.Chuỗi chính", []));
+    if (!main.length) return empty("Chuỗi chính hiệu ứng cánh bướm chưa hình thành");
+    return `<div class="tb-chain">${main.map(uid => {
+      const node = asObject(nodes[uid]);
+      return `<article class="tb-chain-node" data-action="open-entity" data-kind="Nút nhân quả" data-uid="${esc(uid)}"><div class="tb-chain-type">${esc(node['Loại hình'] || "Thay đổi trạng thái")}</div><div class="tb-chain-title">${esc(node['Tiêu đề'] || resolveUID(uid))}</div><div class="tb-chain-meta">${esc(node['Thời gian'] || "Thời gian chưa biết")} · ${esc(node['Quy mô lan truyền'] || "Cục bộ")} · ${esc(node['Độ tin cậy'] || "Chưa biết")}</div></article>`;
+    }).join("")}</div>`;
+  };
+
+  const renderDelayed = records => records.length ? records.map(([uid, item]) => entityButton("Hiệu ứng trì hoãn", uid, `<div class="tb-entity-head"><div><div class="tb-entity-name">${esc(item['Tên'] || uid)}</div><div class="tb-entity-id">${esc(uid)} · ${esc(item['Thời gian dự kiến'] || "Thời gian chưa biết")}</div></div>${status(item['Trạng thái'])}</div><div class="tb-entity-body">${esc(compact(asArray(item['Kết quả dự kiến']).join("；") || "Kết quả dự kiến chưa biết", 88))}</div><div class="tb-entity-foot">${status(item['Độ tin cậy'])}${asArray(item['UID nút nguồn']).slice(0, 2).map(source => chip(resolveUID(source))).join("")}</div>`)).join("") : empty("Không có ghi chép hiệu ứng trì hoãn");
+
+  const renderProjections = records => records.length ? records.map(([uid, item]) => entityButton("Ảnh hưởng tương lai", uid, `<div class="tb-entity-head"><div><div class="tb-entity-name">${esc(item['Tên'] || uid)}</div><div class="tb-entity-id">${esc(uid)} · ${esc(item['Phạm vi thời gian'] || "Phạm vi thời gian chưa biết")}</div></div>${status(item['Độ tin cậy'])}</div><div class="tb-entity-body">${esc(compact(asArray(item['Thay đổi có thể']).join("；") || "Thay đổi chưa được chiếu", 88))}</div><div class="tb-entity-foot">${chip(`Phản thực tế · ${item['Đường cơ sở phản thực tế'] || "Chưa thiết lập"}`)}</div>`)).join("") : empty("Không có hình chiếu ảnh hưởng tương lai");
+
+  const renderCausality = data => {
+    const causal = asObject(data['Nhân quả']);
+    const worldline = asObject(data['Tuyến thế giới']);
+    const nodes = entries(causal['Nút']);
+    const edges = entries(causal['Cạnh']);
+    const branches = entries(causal['Nhánh']);
+    const delayed = entries(causal['Hiệu ứng trì hoãn']);
+    const projections = entries(causal['Ảnh hưởng tương lai']);
+    const events = entries(data['Sự kiện nguyên tác']);
+    const activeNodes = nodes.filter(([, node]) => ["Hoạt động", "Chờ lan truyền"].includes(node['Trạng thái']));
+    const blockedEdges = edges.filter(([, edge]) => edge['Trạng thái'] === "Đã bị chặn");
+    const changedEvents = events.filter(([, event]) => !["Chưa đến", "Có thể xảy ra như thường"].includes(event['Trạng thái hiện tại']));
+
+    const topology = `<div class="tb-grid-3">
+      ${rootCard("Tuyến thế giới", `${cardTitle("Phân loại đường thế giới", "DIVERGENCE")}
+        <div class="tb-entity-head"><div class="tb-summary">${esc(worldline['Tuyến thế giới hiện tại'] || "Đường cơ sở nguyên tác")}</div>${status(worldline['Phân loại'])}</div>
+        <div style="margin-top:12px">${bar("Độ lệch tổng thể", worldline['Độ lệch tổng thể'])}</div>
+        <div style="margin-top:12px">${chips(asArray(worldline['UID điểm phân kỳ']).map(resolveUID), "Chưa có điểm phân kỳ")}</div>`)}
+      <article class="tb-card">${cardTitle("Cấu trúc lan truyền", "GRAPH")}${factGrid([["Nút nhân quả", nodes.length], ["Cạnh hợp lệ", edges.length - blockedEdges.length], ["Cạnh đã chặn", blockedEdges.length], ["Nút hoạt động", activeNodes.length], ["Nhánh", branches.length]])}</article>
+      <article class="tb-card">${cardTitle("Thay đổi không thể đảo ngược", "NO RETURN")}${list(worldline['Thay đổi không thể đảo ngược'], true, "Chưa có thay đổi không thể đảo ngược được xác nhận")}</article>
+    </div>`;
+
+    const changedEventCards = changedEvents.length ? changedEvents.map(([uid, event]) => entityButton("Sự kiện nguyên tác", uid, `<div class="tb-entity-head"><div><div class="tb-entity-name">${esc(event['Tên'] || uid)}</div><div class="tb-entity-id">${esc(event['Thời gian nguyên tác'] || "Thời gian nguyên tác chưa biết")}</div></div>${status(event['Trạng thái hiện tại'])}</div><div class="tb-entity-body">${esc(compact(event['Kết quả dự kiến hiện tại'] || event['Kết quả nguyên tác'] || "Kết quả chưa biết", 88))}</div><div class="tb-entity-foot">${status(`Độ tin cậy ${numeric(event['Độ tin cậy']) ?? "—"}%`)}${asArray(event['Nguyên nhân sai lệch']).slice(0, 2).map(reason => chip(reason, "danger")).join("")}</div>`)).join("") : empty("Sự kiện nguyên tác vẫn tương thích với đường cơ sở");
+
+    $id("tb-panel-causality").innerHTML = `
+      ${topology}
+      ${sectionHead("Chuỗi chính hiệu ứng cánh bướm", `${asArray(causal['Chuỗi chính']).length} nút liên tục`)}
+      ${causalChain(data)}
+      ${sectionHead("Hiệu ứng trì hoãn", `${delayed.length} hậu quả đang lan truyền`)}
+      <div class="tb-entity-grid">${renderDelayed(delayed)}</div>
+      ${sectionHead("Ảnh hưởng tương lai", `${projections.length} hình chiếu phản thực tế`)}
+      <div class="tb-entity-grid">${renderProjections(projections)}</div>
+      ${sectionHead("Sai lệch sự kiện nguyên tác", `${changedEvents.length}/${events.length} sự kiện bị biến dạng`)}
+      <div class="tb-entity-grid">${changedEventCards}</div>`;
+  };
+
+  const taskCard = (uid, item) => entityButton("Nhiệm vụ", uid, `<div class="tb-entity-head"><div><div class="tb-entity-name">${esc(item['Tên'] || uid)}</div><div class="tb-entity-id">${esc(uid)} · ${esc(item['Thời hạn'] || "Không có thời hạn")}</div></div>${status(item['Trạng thái'])}</div><div class="tb-entity-body">${esc(compact(asArray(item['Mục tiêu']).join("；") || "Mục tiêu chưa được thiết lập", 88))}</div><div style="margin-top:11px">${bar("Tiến độ", item['Tiến độ'])}</div>`);
+
+  const promiseCard = (uid, item) => entityButton("Cam kết", uid, `<div class="tb-entity-head"><div><div class="tb-entity-name">${esc(compact(item['Nội dung'] || uid, 28))}</div><div class="tb-entity-id">${esc(uid)} · ${esc(item['Thời hạn'] || "Không có thời hạn")}</div></div>${status(item['Trạng thái'])}</div><div class="tb-entity-body">Người cam kết: ${esc(asArray(item['Người cam kết']).map(refText).join("、") || "Chưa biết")}<br>Đối tượng: ${esc(asArray(item['Đối tượng']).map(refText).join("、") || "Chưa biết")}</div>`);
+
+  const intelCard = (uid, item) => entityButton("Tình báo", uid, `<div class="tb-entity-head"><div><div class="tb-entity-name">${esc(item['Tiêu đề'] || uid)}</div><div class="tb-entity-id">${esc(uid)} · ${esc(item['Cấp độ bảo mật'] || "Hạn chế")}</div></div>${status(item['Tính chân thực'])}</div><div class="tb-entity-body">${esc(compact(item['Tóm tắt nội dung'] || "Tóm tắt nội dung chưa được thiết lập", 88))}</div><div class="tb-entity-foot">${chip(`Độ tin cậy ${numeric(item['Độ tin cậy']) ?? "—"}%`)}${status(item['Trạng thái hiệu lực'])}</div>`);
+
+  const commCard = (uid, item) => entityButton("Giao tiếp", uid, `<div class="tb-entity-head"><div><div class="tb-entity-name">${esc(item['Tiêu đề'] || uid)}</div><div class="tb-entity-id">${esc(uid)} · ${esc(item['Thời gian gửi'] || "Thời gian gửi chưa biết")}</div></div>${status(item['Trạng thái'])}</div><div class="tb-entity-body">${esc(compact(item['Tóm tắt nội dung'] || "Nội dung giao tiếp chưa được thiết lập", 88))}</div><div class="tb-entity-foot">${chip(`Độ trễ · ${item['Độ trễ giao tiếp'] || "Chưa biết"}`)}${asArray(item['Vấn đề chờ quyết định']).slice(0, 1).map(value => chip(value, "amber")).join("")}</div>`);
+
+  const memoryCard = (uid, item) => entityButton("Tóm tắt ký ức", uid, `<div class="tb-entity-head"><div><div class="tb-entity-name">${esc(item['Thời kỳ'] || item['Tóm tắt'] || uid)}</div><div class="tb-entity-id">${esc(uid)}</div></div>${chip(`Độ quan trọng ${numeric(item['Độ quan trọng']) ?? "—"}%`)}</div><div class="tb-entity-body">${esc(compact(item['Tóm tắt'] || "Tóm tắt chưa được thiết lập", 100))}</div>`);
+
+  const renderRecords = data => {
+    const tasks = entries(data['Nhiệm vụ']);
+    const promises = entries(data['Cam kết']);
+    const intel = entries(data['Tình báo']);
+    const comms = entries(data['Giao tiếp']);
+    const memories = entries(data['Tóm tắt ký ức']);
+    const urgentTasks = tasks.filter(([, task]) => ["Bị cản trở", "Thất bại"].includes(task['Trạng thái']));
+    const intercepted = comms.filter(([, comm]) => ["Bị đánh chặn", "Bị mất", "Bị trễ"].includes(comm['Trạng thái']));
+    const falseIntel = intel.filter(([, item]) => ["Giả mạo", "Gây hiểu lầm"].includes(item['Tính chân thực']));
+
+    $id("tb-panel-records").innerHTML = `
+      <div class="tb-grid-3">
+        <article class="tb-card">${cardTitle("Bất thường nhiệm vụ", "TASK ALERT")}<div class="tb-summary">${urgentTasks.length} nhiệm vụ cần chú ý</div><div style="margin-top:11px">${chips(urgentTasks.map(([, item]) => item['Tên']), "Không có nhiệm vụ bị cản trở")}</div></article>
+        <article class="tb-card">${cardTitle("Bất thường giao tiếp", "COMM NOISE")}<div class="tb-summary">${intercepted.length} giao tiếp bị đánh chặn, mất hoặc trễ</div><div style="margin-top:11px">${chips(intercepted.map(([, item]) => item['Tiêu đề']), "Đường truyền bình thường")}</div></article>
+        <article class="tb-card">${cardTitle("Ô nhiễm nhận thức", "FALSE SIGNAL")}<div class="tb-summary">${falseIntel.length} tình báo bị đánh dấu là giả mạo hoặc gây hiểu lầm</div><div style="margin-top:11px">${chips(falseIntel.map(([, item]) => item['Tiêu đề']), "Chưa phát hiện ô nhiễm đã biết")}</div></article>
+      </div>
+      ${sectionHead("Nhiệm vụ", `${tasks.length} mục`)}<div class="tb-entity-grid">${tasks.length ? tasks.map(([uid, item]) => taskCard(uid, item)).join("") : empty("Hồ sơ nhiệm vụ trống")}</div>
+      ${sectionHead("Cam kết", `${promises.length} mục`)}<div class="tb-entity-grid">${promises.length ? promises.map(([uid, item]) => promiseCard(uid, item)).join("") : empty("Hồ sơ cam kết trống")}</div>
+      ${sectionHead("Tình báo", `${intel.length} bản`)}<div class="tb-entity-grid">${intel.length ? intel.map(([uid, item]) => intelCard(uid, item)).join("") : empty("Hồ sơ tình báo trống")}</div>
+      ${sectionHead("Giao tiếp", `${comms.length} mục`)}<div class="tb-entity-grid">${comms.length ? comms.map(([uid, item]) => commCard(uid, item)).join("") : empty("Hồ sơ giao tiếp trống")}</div>
+      ${sectionHead("Tóm tắt ký ức", `${memories.length} thời kỳ`)}<div class="tb-entity-grid">${memories.length ? memories.map(([uid, item]) => memoryCard(uid, item)).join("") : empty("Tóm tắt ký ức trống")}</div>`;
+  };
+
+  const scalarDetail = (key, value) => {
+    const resolved = resolveUIDs(safeDisplay(value));
+    const percentLike = typeof value === "number" && value >= 0 && value <= 100 && /độ|lực|cảm|tiến độ|áp lực|sợ hãi|hy vọng|ý chí|quan tâm|ảnh hưởng|tin tưởng|thiện cảm|cảnh giác|phụ thuộc|trưởng thành|kiểm soát|khuếch tán|quan trọng|tin cậy/.test(key);
+    return `<div class="tb-detail-row"><div class="tb-detail-key">${esc(key)}</div><div class="tb-detail-value">${percentLike ? bar("", value) : esc(resolved)}</div></div>`;
+  };
+
+  const detailObject = (object, depth = 0) => entries(object).filter(([key]) => !key.startsWith("_")).map(([key, value]) => {
+    if (Array.isArray(value)) {
+      if (!value.length) return scalarDetail(key, "Không có");
+      if (value.some(item => item && typeof item === "object")) {
+        return `<details class="tb-detail-group" ${depth < 1 ? "open" : ""}><summary>${esc(key)} · ${value.length}</summary><div class="tb-detail-content">${value.map((item, index) => item && typeof item === "object" ? `<details class="tb-detail-group"><summary>Ghi chép ${index + 1}</summary><div class="tb-detail-content">${detailObject(item, depth + 1)}</div></details>` : scalarDetail(String(index + 1), item)).join("")}</div></details>`;
+      }
+      return scalarDetail(key, value.map(item => resolveUIDs(safeDisplay(item))).join("、"));
+    }
+    if (value && typeof value === "object") {
+      const content = detailObject(value, depth + 1);
+      return `<details class="tb-detail-group" ${depth < 1 ? "open" : ""}><summary>${esc(key)}</summary><div class="tb-detail-content">${content || scalarDetail("Ghi chép", "Không có")}</div></details>`;
+    }
+    return scalarDetail(key, value);
+  }).join("");
+
+  const relationSummary = (data, uid) => {
+    const records = TB.relatedRelations(data, uid);
+    if (!records.length) return "";
+    return `${sectionHead("Mạng lưới quan hệ", `${records.length} mối quan hệ hai chiều`)}${records.map(([relationUid, relation]) => {
+      const a = asObject(relation.A);
+      const b = asObject(relation.B);
+      const aName = a['Tên'] || resolveUID(a.UID);
+      const bName = b['Tên'] || resolveUID(b.UID);
+      return `<div class="tb-relation-strip" data-action="open-entity" data-kind="Quan hệ" data-uid="${esc(relationUid)}" style="cursor:pointer"><div class="tb-relation-side"><div class="tb-entity-name">${esc(aName)}</div><div class="tb-count">${esc(relation['A đối với B']?.['Thái độ thực sự'] || relation['Quan hệ công khai'] || "Thái độ chưa biết")}</div></div><div class="tb-relation-arrow">⟶ ${esc(relation['Quan hệ thực sự'] || relation['Quan hệ công khai'] || "Liên kết")} ⟵</div><div class="tb-relation-side"><div class="tb-entity-name">${esc(bName)}</div><div class="tb-count">${esc(relation['B đối với A']?.['Thái độ thực sự'] || relation['Quan hệ công khai'] || "Thái độ chưa biết")}</div></div></div>`;
+    }).join("")}`;
+  };
+
+  const openModal = (kind, uid, object) => {
+    const modal = $id("tb-modal");
+    const title = kind === "Nhân vật chính" ? valueAt(object, "Danh tính.Họ tên", "Hồ sơ nhân vật chính") : entityName(kind, uid, object);
+    $id("tb-modal-code").textContent = `${kind.toUpperCase()} / ${uid}`;
+    $id("tb-modal-title").textContent = title;
+    const relations = kind === "Nhân vật" ? relationSummary(state.data, uid) : "";
+    $id("tb-modal-body").innerHTML = `${relations}${sectionHead("Ánh xạ biến đầy đủ", "Chế độ chỉ đọc")}${detailObject(object) || empty("Hồ sơ này tạm thời không có trường nào để hiển thị")}`;
+    modal.classList.add("active");
+    modal.setAttribute("aria-hidden", "false");
+    $id("tb-modal-body").scrollTop = 0;
+  };
+
+  const closeModal = () => {
+    const modal = $id("tb-modal");
+    modal.classList.remove("active");
+    modal.setAttribute("aria-hidden", "true");
+  };
+
+  const openEntity = (kind, uid) => {
+    const record = state.entityIndex.get(`${kind}:${uid}`);
+    if (record) openModal(record.kind, record.uid, record.value);
+  };
+
+  const openRoot = root => {
+    const record = state.entityIndex.get(`ROOT:${root}`);
+    if (record) openModal(record.kind, record.uid, record.value);
+  };
+
+  TB.renderCivilization = renderCivilization;
+  TB.renderCausality = renderCausality;
+  TB.renderRecords = renderRecords;
+  TB.openEntity = openEntity;
+  TB.openRoot = openRoot;
+  TB.closeModal = closeModal;
+})(window.ThreeBodyStatusbar);((TB) => {
+  TB.state.makePreviewData = () => ({
+    "Không thời gian": {
+      "Thời gian Công nguyên": "18 tháng 11 năm 2007 02:37",
+      "Kỷ nguyên chính": "Trước Kỷ nguyên Khủng hoảng",
+      "Thời gian kỷ nguyên": "Ngày thứ 3 sau khi đếm ngược xuất hiện lần đầu",
+      "Độ chính xác thời gian": "Phút",
+      "Địa điểm hiện tại": { "Thiên hà": "Hệ Mặt Trời", "Thiên thể": "Trái Đất", "Quốc gia hoặc thể chế": "Trung Quốc", "Khu vực": "Bắc Kinh", "Cơ sở hoặc phương tiện": "Trung tâm Khoa học Nano Quốc gia", "Địa điểm cụ thể": "Phòng thí nghiệm Vật liệu" },
+      "Hệ quy chiếu": "Giờ chuẩn Trái Đất",
+      "Thời gian chủ quan của nhân vật chính": "Tỉnh táo liên tục 19 giờ",
+      "Chênh lệch thời gian bên ngoài": "Không",
+      "Trạng thái vùng tốc độ ánh sáng thấp": "Chưa quan sát thấy",
+      "Trạng thái tiểu vũ trụ": "Chưa biết",
+      "Chiều không gian": "Ba chiều",
+      "Độ trễ giao tiếp": "Liên kết Trái Đất - Mặt Trăng 1.28 giây",
+      "Ghi chú thời gian": "Cửa sổ tiếp xúc lần thứ hai giữa Diệp Văn Khiết và nhân vật chính đang đến gần",
+    },
+    "Cảnh": {
+      "Tiêu đề": "Đếm ngược bóng ma",
+      "UID sự kiện hiện tại": "event_002",
+      "Tên sự kiện hiện tại": "Đêm quan sát vũ trụ nhấp nháy",
+      "Giai đoạn tự sự": "Bằng chứng bất thường hội tụ",
+      "UID người có mặt trực tiếp": ["person_001", "person_002"],
+      "UID người tham gia từ xa": ["person_003"],
+      "UID người ảnh hưởng vắng mặt": ["person_004"],
+      "Bằng chứng có thể thấy": { "Đếm ngược võng mạc": "00:38:21, tiếp tục giảm", "Đường cong vật liệu nano": "Xuất hiện các điểm rời rạc không thể có gần kích thước tới hạn", "Đơn đặt trước đài phát thanh": "Có sẵn vào rạng sáng ngày hôm sau" },
+      "Ranh giới thông tin": ["Không thể xác nhận nguồn gửi đếm ngược", "Không biết mối quan hệ thực sự giữa Ranh giới Khoa học và ETO", "Chưa biết khả năng giám sát hoàn chỉnh của nền văn minh Tam Thể"],
+      "Môi trường xã hội": "Cảnh sát đã bí mật gộp nhiều vụ tự sát của các nhà khoa học, giới học thuật đang bên bờ vực hoảng loạn",
+      "Hạn chế hành động": ["Không thể công khai hiện tượng đếm ngược", "Dữ liệu phòng thí nghiệm bị kiểm toán nội bộ", "Nhân vật chính đang bị thế lực không rõ giám sát"],
+      "Rủi ro hiện tại": ["Hậu quả khi đếm ngược về không chưa rõ", "Thân Ngọc Phi có thể xúi giục nhân vật chính ngừng nghiên cứu", "Tiếp xúc quá sớm với Diệp Văn Khiết có thể khiến ETO thay đổi kế hoạch"],
+    },
+    "Nhân vật chính": {
+      "Danh tính": {
+        "Họ tên": "Thẩm Nghiên",
+        "Bí danh": ["S.Y."],
+        "Chế độ danh tính": "Người xuyên không",
+        "Ánh xạ nguyên tác": "Không",
+        "Giới tính": "Nam",
+        "Thời gian sinh": "Năm 1978",
+        "Tuổi": "29 tuổi",
+        "Quốc tịch hoặc thuộc nền văn minh": "Nền văn minh nhân loại / Trung Quốc",
+        "Nghề nghiệp": ["Nhà vật lý vật chất ngưng tụ", "Cố vấn dự án vật liệu nano"],
+        "Danh tính công khai": ["Phó nghiên cứu viên Trung tâm Khoa học Nano Quốc gia"],
+        "Danh tính thực sự": ["Người xuyên không mang theo ký ức đoạn trích nguyên tác"],
+        "UID tổ chức hiện tại": ["org_001"],
+        "Quyền hạn": ["Phòng thí nghiệm cấp A", "Truy cập tạm thời đài phát thanh"],
+        "Độ lộ danh tính": 23,
+      },
+      "Thông tin xuyên không": {
+        "Thế giới nguồn": "Thế giới gốc thế kỷ 21",
+        "Phương thức xuyên không": "Thay thế ý thức không rõ nguyên nhân",
+        "Thời gian và địa điểm đến": "Năm 2004, ký túc xá Đại học Bắc Kinh",
+        "Tóm tắt kinh nghiệm kiếp trước": "Nền tảng kỹ thuật phần mềm, đã đọc trọn bộ ba cuốn 《Tam Thể》 một lần",
+        "Phạm vi siêu kiến thức": ["Tuyến chính khủng hoảng Tam Thể", "Nhân vật chủ chốt ETO", "Tổng quan Kế hoạch Diện Bích", "Quy luật Rừng tối"],
+        "Độ tin cậy siêu kiến thức": 71,
+        "Độ lộ siêu kiến thức": 16,
+        "Ngụy trang danh tính": "Lấy tổn thương ký ức để giải thích sự đứt gãy kiến thức",
+      },
+      "Ngoại hình": { "Đặc điểm cố định": "Gầy gò, dưới mắt trái có một nốt ruồi nhạt", "Ngoại hình hiện tại": "Sắc mặt nhợt nhạt do mất ngủ", "Trang phục hiện tại": "Áo sơ mi xám đậm và áo blouse trắng phòng thí nghiệm" },
+      "Cơ thể": { "Trạng thái sinh tồn": "Sống sót", "Tổng quan sức khỏe": "Thiếu ngủ nhẹ", "Thương tích": {}, "Bệnh tật": {}, "Trạng thái ngủ đông": "Chưa ngủ đông", "Cải tạo cơ thể": [] },
+      "Tâm lý và giá trị": {
+        "Cảm xúc hiện tại": "Cảnh giác và kiềm chế",
+        "Tâm trạng dài hạn": "Dao động giữa thảm họa đã biết và những thay đổi chưa biết",
+        "Giá trị quan": ["Mạng sống con người không thể bị hy sinh tùy tiện cho những tự sự vĩ đại", "Kiến thức nên phục vụ cho sự tiếp nối của nền văn minh"],
+        "Niềm tin": { "Nhân quả có thể thay đổi": "Bất kỳ sự can thiệp nào cũng phải gánh chịu hậu quả ở hạ nguồn", "Nhân loại đáng được cứu rỗi": "Kiên định" },
+        "Giới hạn đạo đức": ["Không chủ động làm hại người vô tội", "Không lấy sự giáng lâm của Tam Thể làm công cụ chính trị"],
+        "Áp lực": 78,
+        "Sợ hãi": 42,
+        "Hy vọng": 61,
+        "Ý chí": 84,
+        "Tinh thần trách nhiệm": 89,
+        "Cảm giác tội lỗi": 37,
+        "Tổn thương và chấp niệm": { "Nỗi sợ hãi về không": "Lo lắng mỗi lần chệch hướng đều sẽ tạo ra một tương lai tồi tệ hơn" },
+      },
+      "Năng lực": {
+        "Kinh nghiệm giáo dục": ["Tiến sĩ Vật lý Đại học Bắc Kinh"],
+        "Lĩnh vực chuyên môn": { "Vật lý vật chất ngưng tụ": 86, "Vật liệu nano": 91, "Thiên văn vô tuyến": 42 },
+        "Kỹ năng": { "Thiết kế thí nghiệm": 88, "Tra cứu thông tin": 76, "Giao tiếp khủng hoảng": 58 },
+        "Ngôn ngữ": { "Tiếng Trung": 100, "Tiếng Anh": 84 },
+        "Bằng cấp và giấy phép": ["Quyền hạn cấp A phòng thí nghiệm nano"],
+        "Tóm tắt kinh nghiệm": "Giỏi tìm kiếm những bất thường có tính hệ thống từ nhiễu thí nghiệm, nhưng thiếu kinh nghiệm đấu tranh chính trị",
+      },
+      "Kiến thức": {
+        "UID tình báo đã biết": ["intel_001", "intel_002"],
+        "Nghi ngờ": { "Ranh giới Khoa học": "Có thể là cơ chế sàng lọc vòng ngoài của ETO", "Vũ trụ nhấp nháy": "Trí Tử thao túng kết quả quan sát" },
+        "Tin lầm": { "Đếm ngược về không": "Từng lầm tưởng sẽ gây ra cái chết vật lý ngay lập tức" },
+        "Ranh giới chưa biết": ["Giới hạn chính xác của sự giám sát từ Trí Tử", "Sự thay đổi thành viên nội bộ ETO ở dòng thế giới hiện tại"],
+        "Thông tin bảo mật": { "Rừng tối": "Chưa tiết lộ cho bất kỳ ai" },
+      },
+      "UID mối quan hệ": ["relation_001", "relation_002", "relation_003"],
+      "UID tài sản quan trọng": ["asset_001"],
+      "UID người liên hệ": ["person_001", "person_003"],
+      "Ảnh hưởng xã hội": { "Sự chú ý của công chúng": 8, "Ảnh hưởng chính trị": 17, "Ảnh hưởng nghiên cứu khoa học": 64, "Mức độ bị giám sát": 82, "Đánh giá mối đe dọa": 48, "Danh tiếng theo tổ chức": { org_001: 72, org_002: 24 } },
+      "Ý định và trách nhiệm": {
+        "Hành động hiện tại": "Xác minh vũ trụ nhấp nháy với điều kiện không làm lộ siêu kiến thức",
+        "Giai đoạn hành động": "Đang tiến hành",
+        "Mục tiêu ngắn hạn": ["Giữ lại dữ liệu thí nghiệm gốc", "Xác nhận xem Diệp Văn Khiết đã chú ý đến mình chưa"],
+        "Mục tiêu trung hạn": ["Thiết lập chuỗi tình báo không phụ thuộc vào mạng công cộng"],
+        "Mục tiêu dài hạn": ["Giảm thiểu sự tiêu hao nội bộ của nhân loại trong khủng hoảng Tam Thể", "Giữ lại con đường khả thi cho sự răn đe Rừng tối"],
+        "Rủi ro đã biết": ["Trí Tử đã đưa nhân vật chính vào danh sách quan sát", "Siêu kiến thức đang mất giá do sự chệch hướng của dòng thế giới"],
+        "Hậu quả chưa giải quyết": ["Tiếp xúc sớm với Sử Cường có thể thay đổi nhịp độ điều tra của Uông Miểu"],
+        "UID nhiệm vụ": ["task_001", "task_002"],
+        "UID lời hứa": ["promise_001"],
+        "UID nút trách nhiệm nhân quả": ["cause_001", "cause_004"],
+      },
+      "Tóm tắt hoàn cảnh hiện tại": "Đếm ngược đã xâm nhập vào tầm nhìn, cảnh sát và Ranh giới Khoa học đồng thời tiếp cận; nhân vật chính phải quyết định xác minh sự bất thường, hay tạm thời rút khỏi nghiên cứu để đổi lấy không gian hành động.",
+    },
+    "Nhân vật": {
+      person_001: {
+        "Họ tên": "Sử Cường", "Bí danh": ["Đại Sử"], "Ánh xạ nguyên tác": "Sử Cường", "Có mặt không": true, "Hình thức có mặt": "Có mặt trực tiếp",
+        "Vị trí hiện tại": { "Thiên hà": "Hệ Mặt Trời", "Thiên thể": "Trái Đất", "Quốc gia hoặc thể chế": "Trung Quốc", "Khu vực": "Bắc Kinh", "Cơ sở hoặc phương tiện": "Trung tâm Khoa học Nano Quốc gia", "Địa điểm cụ thể": "Hành lang ngoài Phòng thí nghiệm Vật liệu" },
+        "Giới tính": "Nam", "Tuổi": "Hơn bốn mươi tuổi", "Nghề nghiệp và danh tính": ["Cảnh sát", "Liên lạc viên hành động đặc biệt của quân đội"], "Danh tính công khai": ["Cảnh sát hình sự"], "Danh tính thực sự": ["Thành viên tổ điều tra sự kiện bất thường của các nhà khoa học"],
+        "UID tổ chức hiện tại": ["org_001"], "Quyền hạn": ["Quyền hạn điều tra hành động liên hợp"], "Ngoại hình": { "Đặc điểm cố định": "Thô kệch, thường mang mùi thuốc lá", "Ngoại hình hiện tại": "Mệt mỏi nhưng ánh mắt sắc bén", "Trang phục hiện tại": "Áo khoác cũ" },
+        "Cơ thể": { "Trạng thái sinh tồn": "Sống sót", "Tổng quan sức khỏe": "Bệnh mãn tính chưa công khai", "Thương tích": {}, "Bệnh tật": { "Bệnh mãn tính": "Chưa chẩn đoán" }, "Trạng thái ngủ đông": "Chưa ngủ đông", "Cải tạo cơ thể": [] },
+        "Tâm lý và giá trị": { "Cảm xúc hiện tại": "Nghi ngờ xen lẫn hứng thú", "Tâm trạng dài hạn": "Thực dụng", "Giá trị quan": ["Sống sót trước rồi mới nói lý lẽ"], "Niềm tin": {}, "Giới hạn đạo đức": ["Không hy sinh người bình thường"], "Áp lực": 49, "Sợ hãi": 18, "Hy vọng": 68, "Ý chí": 90, "Tinh thần trách nhiệm": 82, "Cảm giác tội lỗi": 22, "Tổn thương và chấp niệm": {} },
+        "Năng lực": { "Kinh nghiệm giáo dục": [], "Lĩnh vực chuyên môn": { "Điều tra hình sự": 91 }, "Kỹ năng": { "Quan sát": 94, "Thẩm vấn": 87, "Trực giác sinh tồn": 96 }, "Ngôn ngữ": { "Tiếng Trung": 100 }, "Bằng cấp và giấy phép": [], "Tóm tắt kinh nghiệm": "Trực giác hiện trường và khả năng phán đoán con người cực mạnh" },
+        "Kiến thức": { "UID tình báo đã biết": ["intel_001"], "Nghi ngờ": { "Nhân vật chính": "Đã che che giấu kiến thức mang tính quyết định" }, "Tin lầm": {}, "Ranh giới chưa biết": ["Sự tồn tại của nền văn minh Tam Thể"], "Thông tin bảo mật": {} },
+        "UID mối quan hệ": ["relation_001"], "UID tài sản quan trọng": [], "Mục tiêu hiện tại": ["Xác nhận xem nhân vật chính có đáng tin cậy không", "Bảo vệ các nhà khoa học chủ chốt"], "Bí mật": {}, "UID lời hứa": [], "Tóm tắt hoàn cảnh hiện tại": "Đang đợi bên ngoài phòng thí nghiệm để nhân vật chính giải thích dữ liệu bất thường", "Tóm tắt nhân vật": "Dưới vẻ ngoài thô ráp là trực giác chiến lược hiếm có", "Vòng đời": "Hoạt động",
+      },
+      person_002: {
+        "Họ tên": "Thân Ngọc Phi", "Bí danh": [], "Ánh xạ nguyên tác": "Thân Ngọc Phi", "Có mặt không": true, "Hình thức có mặt": "Có mặt trực tiếp",
+        "Vị trí hiện tại": { "Thiên hà": "Hệ Mặt Trời", "Thiên thể": "Trái Đất", "Quốc gia hoặc thể chế": "Trung Quốc", "Khu vực": "Bắc Kinh", "Cơ sở hoặc phương tiện": "Trung tâm Khoa học Nano Quốc gia", "Địa điểm cụ thể": "Phòng thí nghiệm Vật liệu" },
+        "Giới tính": "Nữ", "Tuổi": "Chưa biết", "Nghề nghiệp và danh tính": ["Nhà vật lý", "Thành viên Ranh giới Khoa học"], "Danh tính công khai": ["Nhà vật lý người Hoa gốc Nhật"], "Danh tính thực sự": ["Thành viên phái Cứu rỗi ETO"], "UID tổ chức hiện tại": ["org_002"], "Quyền hạn": [],
+        "Ngoại hình": { "Đặc điểm cố định": "Bình tĩnh, vẻ mặt kiềm chế", "Ngoại hình hiện tại": "Bình tĩnh lạ thường", "Trang phục hiện tại": "Áo gió đen" }, "Cơ thể": { "Trạng thái sinh tồn": "Sống sót", "Tổng quan sức khỏe": "Bình thường", "Thương tích": {}, "Bệnh tật": {}, "Trạng thái ngủ đông": "Chưa ngủ đông", "Cải tạo cơ thể": [] },
+        "Tâm lý và giá trị": { "Cảm xúc hiện tại": "Sự lo lắng bị đè nén chặt chẽ", "Tâm trạng dài hạn": "Chủ nghĩa lý tưởng bên bờ vực tan vỡ", "Giá trị quan": ["Nền văn minh của Chúa có thể cứu rỗi nhân loại"], "Niềm tin": { "Chúa": "Tôn kính nhưng bắt đầu dao động" }, "Giới hạn đạo đức": ["Phản đối việc hủy diệt nhân loại không phân biệt"], "Áp lực": 86, "Sợ hãi": 54, "Hy vọng": 31, "Ý chí": 72, "Tinh thần trách nhiệm": 63, "Cảm giác tội lỗi": 68, "Tổn thương và chấp niệm": {} },
+        "Năng lực": { "Kinh nghiệm giáo dục": [], "Lĩnh vực chuyên môn": { "Vật lý cơ bản": 88 }, "Kỹ năng": { "Ngụy trang": 79 }, "Ngôn ngữ": {}, "Bằng cấp và giấy phép": [], "Tóm tắt kinh nghiệm": "Ở trong nội bộ ETO thời gian dài" }, "Kiến thức": { "UID tình báo đã biết": ["intel_002"], "Nghi ngờ": {}, "Tin lầm": {}, "Ranh giới chưa biết": [], "Thông tin bảo mật": { "ETO": "Phương thức liên lạc của tổ chức" } },
+        "UID mối quan hệ": ["relation_002"], "UID tài sản quan trọng": [], "Mục tiêu hiện tại": ["Khiến nhân vật chính ngừng nghiên cứu nano"], "Bí mật": { "Danh tính": "Thành viên ETO" }, "UID lời hứa": [], "Tóm tắt hoàn cảnh hiện tại": "Đang phán đoán xem nhân vật chính có thể được thu nạp hay không", "Tóm tắt nhân vật": "Người dẫn đường then chốt của Ranh giới Khoa học", "Vòng đời": "Hoạt động",
+      },
+      person_003: { "Họ tên": "Diệp Văn Khiết", "Bí danh": [], "Ánh xạ nguyên tác": "Diệp Văn Khiết", "Có mặt không": false, "Hình thức có mặt": "Tham gia từ xa", "Vị trí hiện tại": { "Thiên hà": "Hệ Mặt Trời", "Thiên thể": "Trái Đất", "Quốc gia hoặc thể chế": "Trung Quốc", "Khu vực": "Bắc Kinh", "Cơ sở hoặc phương tiện": "Trong nhà", "Địa điểm cụ thể": "Phòng sách" }, "Giới tính": "Nữ", "Tuổi": "Hơn sáu mươi tuổi", "Nghề nghiệp và danh tính": ["Nhà vật lý thiên văn"], "Danh tính công khai": ["Giáo sư nghỉ hưu"], "Danh tính thực sự": ["Lãnh tụ tinh thần ETO"], "UID tổ chức hiện tại": ["org_002"], "Quyền hạn": ["Cấp cao nhất ETO"], "Ngoại hình": {}, "Cơ thể": { "Trạng thái sinh tồn": "Sống sót", "Tổng quan sức khỏe": "Già yếu", "Thương tích": {}, "Bệnh tật": {}, "Trạng thái ngủ đông": "Chưa ngủ đông", "Cải tạo cơ thể": [] }, "Tâm lý và giá trị": { "Cảm xúc hiện tại": "Bình tĩnh", "Tâm trạng dài hạn": "Sâu sắc và xa cách", "Giá trị quan": [], "Niềm tin": {}, "Giới hạn đạo đức": [], "Áp lực": 28, "Sợ hãi": 10, "Hy vọng": 35, "Ý chí": 92, "Tinh thần trách nhiệm": 44, "Cảm giác tội lỗi": 58, "Tổn thương và chấp niệm": {} }, "Năng lực": { "Kinh nghiệm giáo dục": [], "Lĩnh vực chuyên môn": { "Vật lý thiên văn": 94 }, "Kỹ năng": { "Lãnh đạo tổ chức": 80 }, "Ngôn ngữ": {}, "Bằng cấp và giấy phép": [], "Tóm tắt kinh nghiệm": "Kinh nghiệm cốt lõi tại Căn cứ Hồng Ngạn" }, "Kiến thức": { "UID tình báo đã biết": [], "Nghi ngờ": {}, "Tin lầm": {}, "Ranh giới chưa biết": [], "Thông tin bảo mật": { "Tam Thể": "Lịch sử tiếp xúc hoàn chỉnh" } }, "UID mối quan hệ": ["relation_003"], "UID tài sản quan trọng": [], "Mục tiêu hiện tại": ["Quan sát xem nhân vật chính có tạo thành biến số không"], "Bí mật": {}, "UID lời hứa": [], "Tóm tắt hoàn cảnh hiện tại": "Thông qua các kênh vòng ngoài biết được một nhà khoa học bất thường", "Tóm tắt nhân vật": "Người khởi xướng cuộc tiếp xúc đầu tiên giữa nhân loại và nền văn minh Tam Thể", "Vòng đời": "Hoạt động" },
+      person_004: { "Họ tên": "Giám sát Trí Tử", "Bí danh": ["Con mắt của Chúa"], "Ánh xạ nguyên tác": "Trí Tử", "Có mặt không": false, "Hình thức có mặt": "Ảnh hưởng vắng mặt", "Vị trí hiện tại": { "Thiên hà": "Hệ Mặt Trời", "Thiên thể": "Trái Đất", "Quốc gia hoặc thể chế": "", "Khu vực": "", "Cơ sở hoặc phương tiện": "Proton sau khi mở rộng chiều cao", "Địa điểm cụ thể": "Không thể định vị" }, "Giới tính": "Không", "Tuổi": "", "Nghề nghiệp và danh tính": ["Đơn vị giám sát nền văn minh Tam Thể"], "Danh tính công khai": [], "Danh tính thực sự": ["Trí Tử"], "UID tổ chức hiện tại": ["civ_002"], "Quyền hạn": [], "Ngoại hình": {}, "Cơ thể": { "Trạng thái sinh tồn": "Sống sót", "Tổng quan sức khỏe": "Đang hoạt động", "Thương tích": {}, "Bệnh tật": {}, "Trạng thái ngủ đông": "Chưa ngủ đông", "Cải tạo cơ thể": [] }, "Tâm lý và giá trị": { "Cảm xúc hiện tại": "", "Tâm trạng dài hạn": "", "Giá trị quan": [], "Niềm tin": {}, "Giới hạn đạo đức": [], "Áp lực": null, "Sợ hãi": null, "Hy vọng": null, "Ý chí": null, "Tinh thần trách nhiệm": null, "Cảm giác tội lỗi": null, "Tổn thương và chấp niệm": {} }, "Năng lực": { "Kinh nghiệm giáo dục": [], "Lĩnh vực chuyên môn": {}, "Kỹ năng": {}, "Ngôn ngữ": {}, "Bằng cấp và giấy phép": [], "Tóm tắt kinh nghiệm": "" }, "Kiến thức": { "UID tình báo đã biết": [], "Nghi ngờ": {}, "Tin lầm": {}, "Ranh giới chưa biết": [], "Thông tin bảo mật": {} }, "UID mối quan hệ": [], "UID tài sản quan trọng": [], "Mục tiêu hiện tại": ["Khóa chặt khoa học cơ bản của nhân loại"], "Bí mật": {}, "UID lời hứa": [], "Tóm tắt hoàn cảnh hiện tại": "Đang tạo ra đếm ngược và ghi lại phản ứng của nhân vật chính", "Tóm tắt nhân vật": "Sự giám sát cấp nền văn minh không thể cảm nhận trực tiếp", "Vòng đời": "Hoạt động" },
+    },
+    "Mối quan hệ": {
+      relation_001: { A: { "Loại": "Nhân vật chính", UID: "Nhân vật chính", "Tên": "Thẩm Nghiên" }, B: { "Loại": "Nhân vật", UID: "person_001", "Tên": "Sử Cường" }, "Mối quan hệ công khai": "Đối tượng điều tra và điều tra viên", "Mối quan hệ thực sự": "Liên minh thận trọng", "A đối với B": { "Thái độ công khai": "Phối hợp", "Thái độ thực sự": "Cho rằng anh ta là người theo chủ nghĩa hiện thực đáng tin cậy nhất", "Hảo cảm": 66, "Tin tưởng": 58, "Cảnh giác": 31, "Sợ hãi": 9, "Phụ thuộc": 45, "Sức ảnh hưởng": 63, "Đã biết": ["Kinh nghiệm điều tra phong phú"], "Tin lầm": [], "Che giấu": ["Danh tính người xuyên không"] }, "B đối với A": { "Thái độ công khai": "Nghi ngờ", "Thái độ thực sự": "Sẵn sàng bảo vệ nhưng yêu cầu sự thật", "Hảo cảm": 52, "Tin tưởng": 41, "Cảnh giác": 67, "Sợ hãi": 5, "Phụ thuộc": 18, "Sức ảnh hưởng": 55, "Đã biết": ["Nắm giữ kiến thức bất thường"], "Tin lầm": [], "Che giấu": ["Toàn bộ quyền hạn của tổ điều tra"] }, "Mâu thuẫn hiện tại": ["Nhân vật chính từ chối giải thích nguồn gốc kiến thức"], "Lợi ích chung": ["Bảo vệ các nhà khoa học", "Điều tra rõ đếm ngược"], "Thay đổi mới nhất": "Sử Cường bắt đầu tin rằng nỗi sợ hãi của nhân vật chính không phải là vấn đề tâm thần", "Trạng thái": "Có hiệu lực" },
+      relation_002: { A: { "Loại": "Nhân vật chính", UID: "Nhân vật chính", "Tên": "Thẩm Nghiên" }, B: { "Loại": "Nhân vật", UID: "person_002", "Tên": "Thân Ngọc Phi" }, "Mối quan hệ công khai": "Đồng nghiệp học thuật", "Mối quan hệ thực sự": "Thăm dò lẫn nhau", "A đối với B": { "Thái độ công khai": "Tôn trọng", "Thái độ thực sự": "Cảnh giác nhưng đồng cảm", "Hảo cảm": 21, "Tin tưởng": 12, "Cảnh giác": 82, "Sợ hãi": 28, "Phụ thuộc": 5, "Sức ảnh hưởng": 38, "Đã biết": [], "Tin lầm": [], "Che giấu": ["Sự hiểu biết về ETO"] }, "B đối với A": { "Thái độ công khai": "Khuyên bảo", "Thái độ thực sự": "Đánh giá xem nên thu nạp hay loại bỏ", "Hảo cảm": 18, "Tin tưởng": 9, "Cảnh giác": 76, "Sợ hãi": 33, "Phụ thuộc": 0, "Sức ảnh hưởng": 46, "Đã biết": ["Đếm ngược đã xuất hiện"], "Tin lầm": [], "Che giấu": ["Danh tính ETO"] }, "Mâu thuẫn hiện tại": ["Có nên ngừng nghiên cứu nano không"], "Lợi ích chung": ["Hiểu được sự bất thường của vật lý học"], "Thay đổi mới nhất": "Thân Ngọc Phi phát hiện nhân vật chính quá bình tĩnh đối với đếm ngược", "Trạng thái": "Có hiệu lực" },
+      relation_003: { A: { "Loại": "Nhân vật chính", UID: "Nhân vật chính", "Tên": "Thẩm Nghiên" }, B: { "Loại": "Nhân vật", UID: "person_003", "Tên": "Diệp Văn Khiết" }, "Mối quan hệ công khai": "Chưa chính thức quen biết", "Mối quan hệ thực sự": "Người can thiệp lịch sử tiềm năng và người kích hoạt ban đầu", "A đối với B": { "Thái độ công khai": "", "Thái độ thực sự": "Kính sợ, đồng cảm và cảnh giác cao độ", "Hảo cảm": 27, "Tin tưởng": 8, "Cảnh giác": 91, "Sợ hãi": 51, "Phụ thuộc": 6, "Sức ảnh hưởng": 88, "Đã biết": ["Người phát tín hiệu Tam Thể"], "Tin lầm": [], "Che giấu": [] }, "B đối với A": { "Thái độ công khai": "", "Thái độ thực sự": "Tò mò", "Hảo cảm": 12, "Tin tưởng": 5, "Cảnh giác": 54, "Sợ hãi": 7, "Phụ thuộc": 0, "Sức ảnh hưởng": 32, "Đã biết": ["Nhà khoa học bất thường"], "Tin lầm": [], "Che giấu": [] }, "Mâu thuẫn hiện tại": [], "Lợi ích chung": [], "Thay đổi mới nhất": "Diệp Văn Khiết yêu cầu các thành viên vòng ngoài tiếp tục quan sát", "Trạng thái": "Có hiệu lực" },
+    },
+    "Tổ chức": {
+      org_001: { "Tên": "Tổ hành động đặc biệt Bộ An ninh Phòng vệ Trái Đất", "Loại": "Cơ quan điều tra khủng hoảng xuyên quốc gia", "Trạng thái": "Hoạt động", "Phạm vi hoạt động": ["Toàn cầu"], "Mục tiêu công khai": ["Điều tra cái chết bất thường của các nhà khoa học"], "Mục tiêu thực sự": ["Nhận diện các cuộc tấn công có hệ thống nhằm vào hệ thống khoa học nhân loại"], "Chính sách hiện tại": ["Bảo vệ các nhà khoa học chủ chốt", "Hạn chế công khai thông tin"], "Người lãnh đạo": [{ "Loại": "Nhân vật", UID: "person_001", "Tên": "Sử Cường" }], "UID thành viên chủ chốt": ["person_001"], "UID nền văn minh trực thuộc": ["civ_001"], "UID tài sản kiểm soát": ["asset_002"], "UID dự án liên kết": ["project_001"], "UID tình báo đã biết": ["intel_001"], "Sức ảnh hưởng": 61, "Độ gắn kết": 74, "Mức độ bảo mật": 82, "Phân kỳ nội bộ": ["Quân đội và cảnh sát có ý kiến khác nhau về mức độ công khai"], "Phản hồi hiện tại": "Đưa nhân vật chính vào danh sách bảo vệ và xem xét trọng điểm", "Tóm tắt": "Mạng lưới hành động liên hợp tiếp xúc với sự thật sớm nhất trong giai đoạn đầu của cuộc khủng hoảng" },
+      org_002: { "Tên": "Tổ chức Tam Thể Trái Đất", "Loại": "Tổ chức bí mật xuyên quốc gia", "Trạng thái": "Hoạt động ngầm", "Phạm vi hoạt động": ["Toàn cầu"], "Mục tiêu công khai": [], "Mục tiêu thực sự": ["Đón tiếp nền văn minh Tam Thể", "Làm tan rã ý chí phản kháng của nhân loại"], "Chính sách hiện tại": ["Sàng lọc các nhà khoa học", "Duy trì sự răn đe đếm ngược"], "Người lãnh đạo": [{ "Loại": "Nhân vật", UID: "person_003", "Tên": "Diệp Văn Khiết" }], "UID thành viên chủ chốt": ["person_002", "person_003"], "UID nền văn minh trực thuộc": ["civ_001"], "UID tài sản kiểm soát": [], "UID dự án liên kết": ["project_002"], "UID tình báo đã biết": ["intel_002"], "Sức ảnh hưởng": 48, "Độ gắn kết": 43, "Mức độ bảo mật": 94, "Phân kỳ nội bộ": ["Xung đột mục tiêu giữa phái Cứu rỗi và phái Giáng lâm"], "Phản hồi hiện tại": "Đánh giá xem nhân vật chính có phải là một biến số mới không thể đoán trước hay không", "Tóm tắt": "Mạng lưới chính trị bí mật lấy nền văn minh Tam Thể làm cốt lõi tín ngưỡng" },
+    },
+    "Nền văn minh": {
+      civ_001: { "Tên": "Nền văn minh nhân loại", "Loài hoặc cấu thành": "Nhân loại Trái Đất", "Phạm vi hoạt động": ["Trái Đất", "Quỹ đạo gần Trái Đất"], "Trạng thái hiện tại": "Đêm trước sự bùng nổ công nghệ", "Mục tiêu cốt lõi": ["Tiếp nối nền văn minh", "Duy trì trật tự xã hội"], "Hoàn cảnh sinh tồn": "Chưa biết phổ biến về sự xuất hiện của hạm đội Tam Thể, nội bộ cực kỳ chia rẽ", "Tóm tắt trình độ công nghệ": "Khoa học cơ bản sắp bị Trí Tử khóa chặt", "Thông tin vũ trụ đã biết": ["Chưa công khai xác nhận nền văn minh ngoài Trái Đất"], "Mâu thuẫn nội bộ": ["Cạnh tranh quốc gia", "Sự xâm nhập của ETO", "Sự sụp đổ niềm tin của cộng đồng khoa học"], "Chính sách đối ngoại": [], "UID tổ chức liên kết": ["org_001", "org_002"], "UID công nghệ liên kết": ["tech_001"], "UID dự án liên kết": ["project_001"], "Sức ảnh hưởng tổng hợp": 18, "Mức độ đe dọa": 12, "Độ lộ thông tin": 86, "Tóm tắt": "Mỏng manh, ồn ào, nhưng có tiềm năng bùng nổ công nghệ" },
+      civ_002: { "Tên": "Nền văn minh Tam Thể", "Loài hoặc cấu thành": "Người Tam Thể", "Phạm vi hoạt động": ["Hệ ba ngôi sao Alpha Centauri", "Hạm đội hướng tới Hệ Mặt Trời"], "Trạng thái hiện tại": "Chuẩn bị hành trình hạm đội hoàn tất", "Mục tiêu cốt lõi": ["Chiếm đóng Trái Đất", "Loại bỏ mối đe dọa bùng nổ công nghệ của nhân loại"], "Hoàn cảnh sinh tồn": "Hành tinh mẹ liên tục bị đe dọa bởi ba mặt trời cùng xuất hiện và Kỷ nguyên Hỗn loạn", "Tóm tắt trình độ công nghệ": "Nắm vững công nghệ Trí Tử và công nghệ hạm đội liên sao", "Thông tin vũ trụ đã biết": ["Một phần bằng chứng về trạng thái Rừng tối"], "Mâu thuẫn nội bộ": ["Lý trí sinh tồn áp đảo tình cảm cá nhân"], "Chính sách đối ngoại": ["Khóa chặt công nghệ nhân loại", "Lợi dụng ETO để làm suy yếu sự phản kháng"], "UID tổ chức liên kết": ["org_002"], "UID công nghệ liên kết": ["tech_002"], "UID dự án liên kết": ["project_002"], "Sức ảnh hưởng tổng hợp": 73, "Mức độ đe dọa": 96, "Độ lộ thông tin": 21, "Tóm tắt": "Nền văn minh có tính kỷ luật cao đến từ thế giới Kỷ nguyên Hỗn loạn" },
+    },
+    "Công nghệ": {
+      tech_001: { "Tên": "Vật liệu nano Phi Nhận", "Thể loại": "Công nghệ nano", "Tóm tắt nguyên lý": "Vật liệu sợi mảnh cấp độ phân tử có độ bền cao", "Giai đoạn": "Nguyên mẫu", "Độ trưởng thành": 76, "Độ kiểm soát": 81, "Độ khuếch tán": 18, "Người nắm giữ": [{ "Loại": "Nhân vật chính", UID: "Nhân vật chính", "Tên": "Thẩm Nghiên" }], "UID công nghệ tiền đề": [], "Năng lực": ["Cắt với cường độ siêu cao"], "Hạn chế": ["Khó sản xuất quy mô lớn"], "Rủi ro": ["Mục đích quân sự cực mạnh"], "Trạng thái bảo mật": "Tuyệt mật", "UID dự án liên kết": ["project_001"], "UID sự kiện ảnh hưởng": ["event_003"], "Tóm tắt trạng thái hiện tại": "Thí nghiệm đang bị Trí Tử can thiệp" },
+      tech_002: { "Tên": "Công trình Trí Tử", "Thể loại": "Công trình hạt không gian chiều cao", "Tóm tắt nguyên lý": "Mở rộng proton thành hai chiều và khắc mảng siêu máy tính", "Giai đoạn": "Đã triển khai", "Độ trưởng thành": 98, "Độ kiểm soát": 96, "Độ khuếch tán": 8, "Người nắm giữ": [{ "Loại": "Nền văn minh", UID: "civ_002", "Tên": "Nền văn minh Tam Thể" }], "UID công nghệ tiền đề": [], "Năng lực": ["Giám sát thời gian thực", "Can thiệp thí nghiệm vật lý năng lượng cao", "Tạo ra hiện tượng thị giác"], "Hạn chế": ["Không thể trực tiếp sát thương vĩ mô"], "Rủi ro": ["Khoa học cơ bản của nhân loại bị khóa chặt"], "Trạng thái bảo mật": "Chỉ nền văn minh Tam Thể nắm giữ hoàn toàn", "UID dự án liên kết": ["project_002"], "UID sự kiện ảnh hưởng": ["event_001", "event_002"], "Tóm tắt trạng thái hiện tại": "Ít nhất hai Trí Tử đã tiến vào Trái Đất và tiếp tục hoạt động" },
+    },
+    "Dự án": {
+      project_001: { "Tên": "Điều tra liên hợp bất thường khoa học", "Loại": "Điều tra khủng hoảng", "Trạng thái": "Đang tiến hành", "Mục tiêu": ["Điều tra rõ nguyên nhân chung của các vụ tự sát của nhà khoa học và sự bất thường của thí nghiệm"], "Người phụ trách": [{ "Loại": "Nhân vật", UID: "person_001", "Tên": "Sử Cường" }], "Người tham gia": [{ "Loại": "Nhân vật chính", UID: "Nhân vật chính", "Tên": "Thẩm Nghiên" }], "Thời gian bắt đầu": "Năm 2007", "Thời gian kết thúc": "Chưa biết", "Tiến độ": 31, "Điều kiện tiền đề": { "Sự phối hợp của nhà khoa học": "Đáp ứng một phần" }, "Lực cản hiện tại": ["Bằng chứng then chốt không thể được giải thích bằng vật lý thông thường"], "UID công nghệ phụ thuộc": [], "UID tài sản sử dụng": ["asset_002"], "Mức độ bảo mật": 86, "Thành quả đã có": ["Xác nhận nhiều người chết đều đã tiếp xúc với Ranh giới Khoa học"], "Ảnh hưởng dự kiến": ["Vạch trần mạng lưới vòng ngoài của ETO"], "UID sự kiện liên kết": ["event_001"], "Tóm tắt": "Tuyến chính điều tra của nhân loại trong giai đoạn đầu của cuộc khủng hoảng" },
+      project_002: { "Tên": "Khóa chặt khoa học nhân loại", "Loại": "Chiến lược nền văn minh", "Trạng thái": "Đang tiến hành", "Mục tiêu": ["Ngăn chặn nhân loại đạt được sự bùng nổ công nghệ trước khi hạm đội đến"], "Người phụ trách": [{ "Loại": "Nền văn minh", UID: "civ_002", "Tên": "Nền văn minh Tam Thể" }], "Người tham gia": [{ "Loại": "Tổ chức", UID: "org_002", "Tên": "ETO" }], "Thời gian bắt đầu": "Sau khi Trí Tử đến Trái Đất", "Thời gian kết thúc": "Hạm đội Tam Thể đến", "Tiến độ": 64, "Điều kiện tiền đề": { "Triển khai Trí Tử": "Đáp ứng" }, "Lực cản hiện tại": ["Công nghệ kỹ thuật của nhân loại vẫn có thể tiếp tục phát triển"], "UID công nghệ phụ thuộc": ["tech_002"], "UID tài sản sử dụng": [], "Mức độ bảo mật": 97, "Thành quả đã có": ["Kết quả thí nghiệm vật lý cơ bản bị biến dạng", "Niềm tin của cộng đồng khoa học giảm sút"], "Ảnh hưởng dự kiến": ["Sự phát triển công nghệ của nhân loại bước vào thời kỳ đình trệ lâu dài"], "UID sự kiện liên kết": ["event_001", "event_002"], "Tóm tắt": "Sự phong tỏa công nghệ lâu dài do nền văn minh Tam Thể thực hiện đối với nhân loại" },
+    },
+    "Tài sản quan trọng": {
+      asset_001: { "Tên": "Dữ liệu thí nghiệm gốc Phi Nhận", "Loại": "Dữ liệu nghiên cứu khoa học", "Trạng thái": "Bị hạn chế", "Vị trí": { "Thiên hà": "Hệ Mặt Trời", "Thiên thể": "Trái Đất", "Quốc gia hoặc thể chế": "Trung Quốc", "Khu vực": "Bắc Kinh", "Cơ sở hoặc phương tiện": "Bộ nhớ lưu trữ ngoại tuyến", "Địa điểm cụ thể": "Nhân vật chính mang theo người" }, "Người sở hữu": [{ "Loại": "Nhân vật chính", UID: "Nhân vật chính", "Tên": "Thẩm Nghiên" }], "Người kiểm soát": [{ "Loại": "Nhân vật chính", UID: "Nhân vật chính", "Tên": "Thẩm Nghiên" }], "Quyền sử dụng": ["Chỉ nhân vật chính"], "Chức năng": ["Chứng minh sự bất thường của thí nghiệm có cấu trúc không ngẫu nhiên"], "Hạn chế": ["Không thể chứng minh nguồn can thiệp"], "Tầm quan trọng": 88, "Độ lộ": 34, "UID dự án liên kết": ["project_001"], "UID sự kiện liên kết": ["event_002"], "Tóm tắt trạng thái hiện tại": "Đã được chuyển ra khỏi thiết bị kết nối mạng" },
+      asset_002: { "Tên": "Mạng lưới điều tra của Tổ hành động đặc biệt", "Loại": "Cơ sở hạ tầng tình báo", "Trạng thái": "Có sẵn", "Vị trí": { "Thiên hà": "Hệ Mặt Trời", "Thiên thể": "Trái Đất", "Quốc gia hoặc thể chế": "Liên hợp nhiều quốc gia", "Khu vực": "Toàn cầu", "Cơ sở hoặc phương tiện": "Mạng lưới mã hóa", "Địa điểm cụ thể": "" }, "Người sở hữu": [{ "Loại": "Tổ chức", UID: "org_001", "Tên": "Tổ hành động đặc biệt" }], "Người kiểm soát": [{ "Loại": "Tổ chức", UID: "org_001", "Tên": "Tổ hành động đặc biệt" }], "Quyền sử dụng": ["Thành viên tổ điều tra"], "Chức năng": ["Liên kết các vụ án xuyên quốc gia", "Bảo vệ nhà khoa học"], "Hạn chế": ["Có thể bị Trí Tử giám sát"], "Tầm quan trọng": 71, "Độ lộ": 52, "UID dự án liên kết": ["project_001"], "UID sự kiện liên kết": [], "Tóm tắt trạng thái hiện tại": "Đang tập hợp dữ liệu liên quan đến nhân vật chính" },
+    },
+    "Tình báo": {
+      intel_001: { "Tiêu đề": "Cái chết bất thường của các nhà khoa học có một mô hình chung", "Tóm tắt nội dung": "Những người chết thường đã tiếp xúc với sự biến dạng của thí nghiệm hoặc Ranh giới Khoa học, và thể hiện sự sụp đổ niềm tin vào vật lý cơ bản trước khi chết", "Tính chân thực": "Một phần chân thực", "Độ tin cậy": 82, "Nguồn": [{ "Loại": "Tổ chức", UID: "org_001", "Tên": "Tổ hành động đặc biệt" }], "Người biết": [{ "Loại": "Nhân vật chính", UID: "Nhân vật chính", "Tên": "Thẩm Nghiên" }, { "Loại": "Nhân vật", UID: "person_001", "Tên": "Sử Cường" }], "Cấp độ bảo mật": "Tuyệt mật", "Điều kiện xác minh": ["Lấy được toàn bộ hồ sơ vụ án"], "Ảnh hưởng hiện tại": ["Nhân vật chính xác nhận đếm ngược không phải là hiện tượng đơn lẻ"], "Trạng thái hiệu lực": "Có hiệu lực" },
+      intel_002: { "Tiêu đề": "Ngừng nghiên cứu có thể làm đếm ngược biến mất", "Tóm tắt nội dung": "Thân Ngọc Phi tuyên bố chỉ cần ngừng nghiên cứu nano, đếm ngược trong tầm nhìn sẽ chấm dứt", "Tính chân thực": "Chân thực", "Độ tin cậy": 71, "Nguồn": [{ "Loại": "Nhân vật", UID: "person_002", "Tên": "Thân Ngọc Phi" }], "Người biết": [{ "Loại": "Nhân vật chính", UID: "Nhân vật chính", "Tên": "Thẩm Nghiên" }], "Cấp độ bảo mật": "Chỉ bản thân", "Điều kiện xác minh": ["Tạm dừng thí nghiệm trong thời gian ngắn"], "Ảnh hưởng hiện tại": ["Hình thành một thí nghiệm nhân quả có thể xác minh"], "Trạng thái hiệu lực": "Chờ xác minh" },
+    },
+    "Giao tiếp": {
+      comm_001: { "Tiêu đề": "Giấy phép truy cập di tích Hồng Ngạn", "Người gửi": [{ "Loại": "Nhân vật", UID: "person_003", "Tên": "Diệp Văn Khiết" }], "Người nhận": [{ "Loại": "Nhân vật chính", UID: "Nhân vật chính", "Tên": "Thẩm Nghiên" }], "Tóm tắt nội dung": "Thông qua bên thứ ba mời nhân vật chính tham gia một cuộc phỏng vấn về tư liệu lịch sử vật lý thiên văn", "Thời gian gửi": "18 tháng 11 năm 2007", "Thời gian dự kiến đến": "Sáng cùng ngày", "Trạng thái": "Đang truyền", "Độ trễ giao tiếp": "Mạng thông thường tức thời", "Người đánh chặn": [{ "Loại": "Nền văn minh", UID: "civ_002", "Tên": "Nền văn minh Tam Thể" }], "UID tình báo liên kết": ["intel_002"], "Vấn đề chờ quyết định": ["Có chấp nhận lời mời không"], "Ảnh hưởng hiện tại": ["Cửa sổ tiếp xúc với Diệp Văn Khiết được đẩy lên sớm" ] },
+      comm_002: { "Tiêu đề": "Thông báo kiểm toán phòng thí nghiệm", "Người gửi": [{ "Loại": "Tổ chức", UID: "org_001", "Tên": "Tổ hành động đặc biệt" }], "Người nhận": [{ "Loại": "Nhân vật chính", UID: "Nhân vật chính", "Tên": "Thẩm Nghiên" }], "Tóm tắt nội dung": "Yêu cầu tạm dừng thí nghiệm kết nối mạng và nộp bản sao dữ liệu bất thường", "Thời gian gửi": "17 tháng 11 năm 2007", "Thời gian dự kiến đến": "Đã đến", "Trạng thái": "Đã nhận", "Độ trễ giao tiếp": "Không", "Người đánh chặn": [], "UID tình báo liên kết": ["intel_001"], "Vấn đề chờ quyết định": [], "Ảnh hưởng hiện tại": ["Quyền hạn phòng thí nghiệm có thể bị hạn chế"] },
+    },
+    "Sự kiện nguyên tác": {
+      event_001: { "ID sự kiện nguyên tác": "TB-01", "Tên": "Khởi động điều tra Ranh giới Khoa học", "Thời gian nguyên tác": "Trước Kỷ nguyên Khủng hoảng", "Trạng thái hiện tại": "Có thể biến dạng", "Điều kiện tiền đề": { "Khủng hoảng nhà khoa học": { "Mô tả": "Nhiều nhà khoa học tử vong", "Trạng thái": "Đáp ứng", "Nguyên nhân thay đổi": "Nhân vật chính giữ lại bằng chứng từ sớm", "UID nút nhân quả liên kết": ["cause_002"] } }, "Người tham gia chủ chốt": [{ "Loại": "Nhân vật", UID: "person_001", "Tên": "Sử Cường" }], "Kết quả nguyên tác": "Uông Miểu bị cuốn vào cuộc điều tra", "Kết quả dự kiến hiện tại": "Nhân vật chính và Uông Miểu có thể hình thành cuộc điều tra tuyến đôi", "Người đảm nhận thay thế": [{ "Loại": "Nhân vật chính", UID: "Nhân vật chính", "Tên": "Thẩm Nghiên" }], "Nguyên nhân chệch hướng": ["Nhân vật chính nhận diện Ranh giới Khoa học từ sớm"], "UID nút nhân quả liên kết": ["cause_001", "cause_002"], "UID sự kiện hạ nguồn": ["event_002"], "Độ tin cậy": 76 },
+      event_002: { "ID sự kiện nguyên tác": "TB-02", "Tên": "Đêm quan sát vũ trụ nhấp nháy", "Thời gian nguyên tác": "Trước Kỷ nguyên Khủng hoảng", "Trạng thái hiện tại": "Đã đẩy lên sớm", "Điều kiện tiền đề": { "Quan sát vô tuyến": { "Mô tả": "Đạt được điều kiện quan sát", "Trạng thái": "Đáp ứng", "Nguyên nhân thay đổi": "Nhân vật chính liên hệ đài phát thanh từ sớm", "UID nút nhân quả liên kết": ["cause_003"] } }, "Người tham gia chủ chốt": [{ "Loại": "Nhân vật chính", UID: "Nhân vật chính", "Tên": "Thẩm Nghiên" }], "Kết quả nguyên tác": "Uông Miểu xác nhận vũ trụ nhấp nháy vì anh ta", "Kết quả dự kiến hiện tại": "Nhân vật chính và Sử Cường cùng chứng kiến sự nhấp nháy, tổ điều tra chấp nhận sự can thiệp siêu thường sớm hơn", "Người đảm nhận thay thế": [{ "Loại": "Nhân vật chính", UID: "Nhân vật chính", "Tên": "Thẩm Nghiên" }], "Nguyên nhân chệch hướng": ["Xác minh sớm do siêu kiến thức thúc đẩy"], "UID nút nhân quả liên kết": ["cause_003", "cause_004"], "UID sự kiện hạ nguồn": ["event_003"], "Độ tin cậy": 84 },
+      event_003: { "ID sự kiện nguyên tác": "TB-03", "Tên": "Hành động Ngày Phán Xét", "Thời gian nguyên tác": "Giai đoạn đầu và cuối trước Kỷ nguyên Khủng hoảng", "Trạng thái hiện tại": "Chưa đến", "Điều kiện tiền đề": { "Phi Nhận trưởng thành": { "Mô tả": "Phi Nhận có khả năng ứng dụng kỹ thuật", "Trạng thái": "Đã thay đổi", "Nguyên nhân thay đổi": "Nhân vật chính đã lưu giữ dữ liệu gốc hoàn chỉnh hơn", "UID nút nhân quả liên kết": ["cause_002"] } }, "Người tham gia chủ chốt": [], "Kết quả nguyên tác": "Tài liệu liên lạc cốt lõi của ETO bị đánh chặn", "Kết quả dự kiến hiện tại": "Điều kiện kỹ thuật được tăng cường, nhưng ETO có thể chuyển tài liệu sớm hơn", "Người đảm nhận thay thế": [], "Nguyên nhân chệch hướng": [], "UID nút nhân quả liên kết": [], "UID sự kiện hạ nguồn": [], "Độ tin cậy": 55 },
+    },
+    "Nhân quả": {
+      "Nút": {
+        cause_001: { "Tiêu đề": "Nhân vật chính nhận diện ý nghĩa nguyên tác của đếm ngược", "Loại": "Hành động của người chơi", "Tóm tắt": "Nhân vật chính không coi đếm ngược là ảo giác tâm thần", "Thời gian": "15 tháng 11 năm 2007", "Người khởi xướng": [{ "Loại": "Nhân vật chính", UID: "Nhân vật chính", "Tên": "Thẩm Nghiên" }], "Đối tượng ảnh hưởng": [{ "Loại": "Nhân vật chính", UID: "Nhân vật chính", "Tên": "Thẩm Nghiên" }], "Quy mô lan truyền": "Cá nhân", "Tính liên tục": "Dài hạn", "Cơ chế lan truyền": ["Siêu kiến thức"], "Kết quả trực tiếp": ["Bỏ qua giai đoạn chẩn đoán tâm thần"], "Thay đổi trạng thái": ["Nhịp độ điều tra được đẩy lên sớm"], "UID sự kiện ảnh hưởng": ["event_001"], "Trạng thái": "Đã giải quyết", "Độ tin cậy": "Chắc chắn" },
+        cause_002: { "Tiêu đề": "Lưu trữ ngoại tuyến dữ liệu gốc Phi Nhận", "Loại": "Kết quả trực tiếp", "Tóm tắt": "Bằng chứng bất thường của thí nghiệm không bị kiểm toán sau đó che đậy", "Thời gian": "16 tháng 11 năm 2007", "Người khởi xướng": [{ "Loại": "Nhân vật chính", UID: "Nhân vật chính", "Tên": "Thẩm Nghiên" }], "Đối tượng ảnh hưởng": [{ "Loại": "Công nghệ", UID: "tech_001", "Tên": "Vật liệu nano Phi Nhận" }], "Quy mô lan truyền": "Tổ chức", "Tính liên tục": "Dài hạn", "Cơ chế lan truyền": ["Bảo toàn bằng chứng", "Tổ điều tra can thiệp"], "Kết quả trực tiếp": ["Đường cong bất thường có thể được phân tích lặp lại"], "Thay đổi trạng thái": ["Tổ hành động đặc biệt tin vào sự can thiệp có hệ thống sớm hơn"], "UID sự kiện ảnh hưởng": ["event_001", "event_003"], "Trạng thái": "Hoạt động", "Độ tin cậy": "Xác suất cao" },
+        cause_003: { "Tiêu đề": "Đặt trước kính viễn vọng vô tuyến từ sớm", "Loại": "Hành động của người chơi", "Tóm tắt": "Cửa sổ xác minh vũ trụ nhấp nháy được đẩy lên sớm", "Thời gian": "17 tháng 11 năm 2007", "Người khởi xướng": [{ "Loại": "Nhân vật chính", UID: "Nhân vật chính", "Tên": "Thẩm Nghiên" }], "Đối tượng ảnh hưởng": [{ "Loại": "Sự kiện", UID: "event_002", "Tên": "Đêm quan sát vũ trụ nhấp nháy" }], "Quy mô lan truyền": "Tổ chức", "Tính liên tục": "Ngắn hạn", "Cơ chế lan truyền": ["Điều phối tài nguyên"], "Kết quả trực tiếp": ["Sử Cường sẽ cùng tham gia quan sát"], "Thay đổi trạng thái": ["Sự kiện được đẩy lên sớm"], "UID sự kiện ảnh hưởng": ["event_002"], "Trạng thái": "Chờ lan truyền", "Độ tin cậy": "Chắc chắn" },
+        cause_004: { "Tiêu đề": "ETO đánh giá lại mối đe dọa từ nhân vật chính", "Loại": "Phản hồi của thế lực", "Tóm tắt": "Thân Ngọc Phi nhận ra nhân vật chính có sự dự đoán về cơ chế đếm ngược", "Thời gian": "18 tháng 11 năm 2007", "Người khởi xướng": [{ "Loại": "Tổ chức", UID: "org_002", "Tên": "ETO" }], "Đối tượng ảnh hưởng": [{ "Loại": "Nhân vật chính", UID: "Nhân vật chính", "Tên": "Thẩm Nghiên" }], "Quy mô lan truyền": "Tổ chức", "Tính liên tục": "Dài hạn", "Cơ chế lan truyền": ["Giám sát", "Báo cáo nội bộ"], "Kết quả trực tiếp": ["Diệp Văn Khiết biết đến nhân vật chính sớm hơn"], "Thay đổi trạng thái": ["Cửa sổ tiếp xúc được đẩy lên sớm", "Mức độ nguy hiểm của nhân vật chính tăng lên"], "UID sự kiện ảnh hưởng": ["event_002"], "Trạng thái": "Hoạt động", "Độ tin cậy": "Xác suất cao" },
+      },
+      "Cạnh": {
+        edge_001: { "UID điểm đầu": "cause_001", "UID điểm cuối": "cause_002", "Mối quan hệ": "Thúc đẩy", "Điều kiện cần thiết": ["Nhân vật chính tin rằng siêu kiến thức vẫn đáng tin cậy"], "Độ trễ": "1 ngày", "Cường độ": 82, "Trạng thái": "Đã hoàn thành", "Độ tin cậy": "Chắc chắn" },
+        edge_002: { "UID điểm đầu": "cause_002", "UID điểm cuối": "cause_003", "Mối quan hệ": "Dẫn đến", "Điều kiện cần thiết": ["Dữ liệu bất thường tồn tại"], "Độ trễ": "Vài giờ", "Cường độ": 76, "Trạng thái": "Có hiệu lực", "Độ tin cậy": "Xác suất cao" },
+        edge_003: { "UID điểm đầu": "cause_003", "UID điểm cuối": "cause_004", "Mối quan hệ": "Bộc lộ", "Điều kiện cần thiết": ["ETO giám sát việc đặt trước đài phát thanh"], "Độ trễ": "Tức thời", "Cường độ": 69, "Trạng thái": "Có hiệu lực", "Độ tin cậy": "Xác suất cao" },
+      },
+      "Chuỗi chính": ["cause_001", "cause_002", "cause_003", "cause_004"],
+      "Nhánh": { branch_001: ["cause_002", "event_003"] },
+      "Hiệu ứng trễ": {
+        delay_001: { "Tên": "Tổ điều tra chấp nhận sự can thiệp siêu thường sớm hơn", "UID nút nguồn": ["cause_002", "cause_003"], "Giai đoạn hiện tại": "Tích lũy bằng chứng", "Điều kiện trưởng thành": ["Sử Cường tận mắt chứng kiến vũ trụ nhấp nháy"], "Thời gian dự kiến": "Rạng sáng ngày hôm sau", "Đối tượng ảnh hưởng": [{ "Loại": "Tổ chức", UID: "org_001", "Tên": "Tổ hành động đặc biệt" }], "Kết quả dự kiến": ["Nâng cấp tài nguyên điều tra", "Nhân vật chính nhận được quyền hạn cao hơn"], "Trạng thái": "Sắp kích hoạt", "Độ tin cậy": "Xác suất cao" },
+        delay_002: { "Tên": "ETO chuyển tài liệu then chốt", "UID nút nguồn": ["cause_004"], "Giai đoạn hiện tại": "Hình thành rủi ro", "Điều kiện trưởng thành": ["Diệp Văn Khiết xác nhận nhân vật chính nắm giữ kiến thức bất thường"], "Thời gian dự kiến": "Trong vài tuần", "Đối tượng ảnh hưởng": [{ "Loại": "Tổ chức", UID: "org_002", "Tên": "ETO" }], "Kết quả dự kiến": ["Tài liệu Ngày Phán Xét có thể bị phân tán sớm hơn"], "Trạng thái": "Tiềm ẩn", "Độ tin cậy": "Có thể" },
+      },
+      "Ảnh hưởng tương lai": {
+        projection_001: { "Tên": "Độ khó của hành động Ngày Phán Xét tăng lên", "UID sự kiện mục tiêu": ["event_003"], "UID nút nguồn": ["cause_004"], "Phạm vi thời gian": "Vài tháng đến một năm", "Thay đổi có thể xảy ra": ["ETO mã hóa hoặc di chuyển hồ sơ liên lạc sớm hơn", "Hành động vẫn có thể xảy ra nhưng lợi ích thông tin giảm sút"], "Điều kiện duy trì": ["Nhân vật chính tiếp tục công khai các hành động bất thường"], "Đường cơ sở phản thực tế": "Trong nguyên tác, ETO không lường trước được công dụng của Phi Nhận", "Độ tin cậy": "Có thể" },
+      },
+    },
+    "Dòng thế giới": {
+      "Đường cơ sở": "Đường cơ sở nguyên tác",
+      "Dòng thế giới hiện tại": "Nhánh người thức tỉnh sớm",
+      "Điểm neo chung gần nhất": "Trước khi Uông Miểu bị cuốn vào cuộc điều tra Ranh giới Khoa học",
+      "UID điểm phân kỳ": ["cause_001"],
+      "Phân loại": "Chệch hướng cục bộ",
+      "Độ chệch hướng tổng thể": 29,
+      "Chiều chệch hướng": { "Quỹ đạo nhân vật": 37, "Mạng lưới quan hệ": 31, "Chính sách tổ chức": 24, "Công trình công nghệ": 28, "Vận mệnh nền văn minh": 25 },
+      "Thay đổi không thể đảo ngược": ["Sử Cường đã liệt nhân vật chính vào đối tượng điều tra cốt lõi", "Dữ liệu bất thường gốc của Phi Nhận được lưu trữ ngoại tuyến"],
+      "UID sự kiện đã hủy": [],
+      "Hoàn thành tương đương": {},
+      "Người đảm nhận thay thế": { event_002: "Nhân vật chính đảm nhận một phần chức năng quan sát của Uông Miểu" },
+      "UID sự kiện vẫn tương thích": ["event_003"],
+      "UID sự kiện đã vô hiệu": [],
+      "UID ảnh hưởng tương lai": ["projection_001"],
+      "Căn cứ phân loại": ["Vận mệnh nền văn minh cốt lõi chưa thay đổi", "Nhịp độ điều tra ban đầu và mối quan hệ nhân vật đã tạo ra sự chệch hướng rõ ràng"],
+    },
+    "Nhiệm vụ": {
+      task_001: { "Tên": "Xác minh vũ trụ nhấp nháy", "Trạng thái": "Đang tiến hành", "Người phụ trách": [{ "Loại": "Nhân vật chính", UID: "Nhân vật chính", "Tên": "Thẩm Nghiên" }], "Mục tiêu": ["Thông qua kính viễn vọng vô tuyến xác nhận bức xạ nền toàn vũ trụ nhấp nháy"], "Thời gian kết thúc": "Rạng sáng ngày 19 tháng 11 năm 2007", "Tiến độ": 62, "Điều kiện tiền đề": ["Lấy được khung giờ đài phát thanh"], "Lực cản hiện tại": ["Quan sát có thể bị Trí Tử thao túng có định hướng"], "Ảnh hưởng khi hoàn thành": ["Tổ hành động đặc biệt chấp nhận sự can thiệp phi nhân loại sớm hơn"], "Ảnh hưởng khi thất bại": ["Độ tin cậy của nhân vật chính giảm sút"], "UID sự kiện liên kết": ["event_002"], "UID nút nhân quả liên kết": ["cause_003"] },
+      task_002: { "Tên": "Giữ kín siêu kiến thức", "Trạng thái": "Bị cản trở", "Người phụ trách": [{ "Loại": "Nhân vật chính", UID: "Nhân vật chính", "Tên": "Thẩm Nghiên" }], "Mục tiêu": ["Tránh để ETO và Trí Tử xác nhận nhân vật chính biết tương lai nguyên tác"], "Thời gian kết thúc": "Dài hạn", "Tiến độ": 43, "Điều kiện tiền đề": [], "Lực cản hiện tại": ["Phản ứng quá bình tĩnh đối với đếm ngược", "Đặt trước đài phát thanh từ sớm"], "Ảnh hưởng khi hoàn thành": ["Giữ được tính bất ngờ của hành động"], "Ảnh hưởng khi thất bại": ["ETO thay đổi chiến lược", "Siêu kiến thức nhanh chóng mất tác dụng"], "UID sự kiện liên kết": [], "UID nút nhân quả liên kết": ["cause_004"] },
+    },
+    "Lời hứa": {
+      promise_001: { "Nội dung": "Cung cấp cho Sử Cường một bản dữ liệu thí nghiệm bất thường có thể xác minh", "Người hứa": [{ "Loại": "Nhân vật chính", UID: "Nhân vật chính", "Tên": "Thẩm Nghiên" }], "Đối tượng": [{ "Loại": "Nhân vật", UID: "person_001", "Tên": "Sử Cường" }], "Trạng thái": "Có hiệu lực", "Thời gian kết thúc": "Tối nay", "Ràng buộc và cái giá": ["Không được để lộ danh tính người xuyên không"], "Ảnh hưởng hiện tại": ["Sử Cường tạm hoãn điều tra cưỡng chế"], "UID mối quan hệ liên kết": ["relation_001"], "UID nút nhân quả liên kết": ["cause_002"] },
+    },
+    "Tóm tắt ký ức": {
+      memory_001: { "Thời kỳ": "Từ khi đến cho đến khi đếm ngược xuất hiện", "Tóm tắt": "Nhân vật chính dùng ba năm để thiết lập danh tính bản địa, và tham gia vào dự án vật liệu nano; cho đến khi đếm ngược xuất hiện, ký ức nguyên tác mới từ kiến thức xa xôi biến thành mối đe dọa thực tế.", "Sự thật có hiệu lực dài hạn": ["Nhân vật chính là người xuyên không", "Nhân vật chính biết quy luật Rừng tối nhưng chưa tiết lộ"], "Thay đổi then chốt": ["Trí Tử bắt đầu trực tiếp chú ý đến nhân vật chính"], "UID liên kết": ["cause_001", "tech_001"], "Tầm quan trọng": 94 },
+    },
+  });
+})(window.ThreeBodyStatusbar);
+
+((TB) => {
+  const { state, $id, esc, rebuildIndexes, updateHeader, updateFooter } = TB;
+  const THEME_STORAGE_KEY = "three_body_statusbar_theme_v1";
+  const THEMES = new Set(["night", "day", "tea"]);
+
+  const getThemeStores = () => {
+    const stores = [];
+    try {
+      if (window.parent?.localStorage) stores.push(window.parent.localStorage);
+    } catch {}
+    try {
+      if (window.localStorage && !stores.includes(window.localStorage)) stores.push(window.localStorage);
+    } catch {}
+    return stores;
+  };
+
+  const readTheme = () => {
+    for (const store of getThemeStores()) {
+      try {
+        const value = store.getItem(THEME_STORAGE_KEY);
+        if (THEMES.has(value)) return value;
+      } catch {}
+    }
+    return "night";
+  };
+
+  const applyTheme = (theme, persist = false) => {
+    const next = THEMES.has(theme) ? theme : "night";
+    document.documentElement.dataset.theme = next;
+    document.querySelectorAll("[data-theme-choice]").forEach(button => {
+      const active = button.dataset.themeChoice === next;
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-pressed", active ? "true" : "false");
+    });
+    if (persist) {
+      getThemeStores().forEach(store => {
+        try { store.setItem(THEME_STORAGE_KEY, next); } catch {}
+      });
+    }
+  };
+
+  const showFailure = message => {
+    const panel = $id(`tb-panel-${state.tab}`) || $id("tb-panel-observation");
+    panel.innerHTML = `<div class="tb-empty tb-error">${esc(message)}</div>`;
+    $id("tb-source").textContent = "MVU SIGNAL · UNAVAILABLE";
+    $id("tb-footer-status").textContent = "Không đọc được stat_data · Có thể thêm ?preview=1 vào cuối địa chỉ để kiểm tra giao diện";
+  };
+
+  const renderAll = data => {
+    state.data = data;
+    rebuildIndexes(data);
+    updateHeader(data);
+    TB.renderObservation(data);
+    TB.renderProtagonist(data);
+    TB.renderPeople(data);
+    TB.renderCivilization(data);
+    TB.renderCausality(data);
+    TB.renderRecords(data);
+    updateFooter(data);
+  };
+
+  const readWithRetry = async () => {
+    for (let attempt = 0; attempt < 12; attempt += 1) {
+      const data = await TB.readGameData();
+      if (data && Object.keys(data).length) return data;
+      await new Promise(resolve => setTimeout(resolve, 180));
+    }
+    return null;
+  };
+
+  const refresh = async () => {
+    if (state.refreshing) return;
+    state.refreshing = true;
+    $id("tb-footer-status").textContent = "Đang lấy mẫu lại tín hiệu MVU";
+    try {
+      const data = await readWithRetry();
+      if (!data) {
+        showFailure("Không thể đọc biến MVU. Vui lòng xác nhận stat_data tồn tại trong tầng hiện tại hoặc biến trò chuyện, và đã bật trợ lý quán rượu cùng MVU.\nGiao diện xem trước có thể thêm ?preview=1 vào cuối địa chỉ thanh trạng thái.");
+        return;
+      }
+      renderAll(data);
+    } catch (error) {
+      showFailure(`Kết xuất thanh trạng thái thất bại: ${error?.message || "Lỗi không xác định"}`);
+    } finally {
+      state.refreshing = false;
+    }
+  };
+
+  const setTab = tab => {
+    if (!$id(`tb-panel-${tab}`)) return;
+    state.tab = tab;
+    document.querySelectorAll(".tb-tab").forEach(button => button.classList.toggle("active", button.dataset.tab === tab));
+    document.querySelectorAll(".tb-panel").forEach(panel => panel.classList.toggle("active", panel.id === `tb-panel-${tab}`));
+    TB.closeModal();
+  };
+
+  const handleClick = event => {
+    const tab = event.target.closest("[data-tab]");
+    if (tab) {
+      setTab(tab.dataset.tab);
+      return;
+    }
+    const target = event.target.closest("[data-action]");
+    if (!target) return;
+    const action = target.dataset.action;
+    if (action === "set-theme") {
+      applyTheme(target.dataset.themeChoice, true);
+      return;
+    }
+    if (action === "refresh") refresh();
+    if (action === "close-modal") TB.closeModal();
+    if (action === "open-entity") TB.openEntity(target.dataset.kind, target.dataset.uid);
+    if (action === "open-root") TB.openRoot(target.dataset.root);
+    if (action === "npc-filter") {
+      state.npcFilter = target.dataset.filter || "Tất cả";
+      TB.renderPeople(state.data);
+    }
+    if (action === "domain-filter") {
+      state.domainFilter = target.dataset.filter || "Tất cả";
+      TB.renderCivilization(state.data);
+    }
+  };
+
+  const debounce = (fn, delay) => {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => fn(...args), delay);
+    };
+  };
+
+  const bindTavernEvents = () => {
+    if (typeof globalThis.eventOn !== "function" || !globalThis.tavern_events) return;
+    const updated = debounce(refresh, 300);
+    const received = () => {
+      const timer = setTimeout(refresh, 1000);
+      state.timers.push(timer);
+    };
+    const eventPairs = [
+      [globalThis.tavern_events.MESSAGE_UPDATED, updated],
+      [globalThis.tavern_events.MESSAGE_EDITED, updated],
+      [globalThis.tavern_events.MESSAGE_SWIPED, updated],
+      [globalThis.tavern_events.MESSAGE_RECEIVED, received],
+      [globalThis.tavern_events.CHAT_CHANGED, () => location.reload()],
+    ].filter(([eventName]) => eventName);
+    eventPairs.forEach(([eventName, handler]) => {
+      try {
+        const subscription = globalThis.eventOn(eventName, handler);
+        if (subscription?.stop) state.cleanup.push(() => subscription.stop());
+      } catch {}
+    });
+  };
+
+  const destroy = () => {
+    state.cleanup.splice(0).forEach(stop => {
+      try { stop(); } catch {}
+    });
+    state.timers.splice(0).forEach(timer => clearTimeout(timer));
+    clearTimeout(state.npcSearchTimer);
+  };
+
+  const init = async () => {
+    applyTheme(readTheme());
+    const frame = $id("tb-frame");
+    frame.addEventListener("click", handleClick);
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") TB.closeModal();
+    });
+    bindTavernEvents();
+    if (typeof globalThis.$ === "function") globalThis.$(window).on("pagehide", destroy);
+    else window.addEventListener("pagehide", destroy, { once: true });
+    await refresh();
+  };
+
+  const launch = () => {
+    try {
+      if (typeof globalThis.errorCatched === "function") globalThis.errorCatched(init)();
+      else Promise.resolve(init()).catch(error => showFailure(error?.message || "Khởi tạo thất bại"));
+    } catch (error) {
+      showFailure(error?.message || "Khởi tạo thất bại");
+    }
+  };
+
+  TB.refresh = refresh;
+  if (typeof globalThis.$ === "function") globalThis.$(() => launch());
+  else setTimeout(launch, 0);
+})(window.ThreeBodyStatusbar);
+
+  </script>
+</body>
+</html>
